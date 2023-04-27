@@ -1,0 +1,41 @@
+body {
+  color: black; 
+  background-color: #E9E9E9;
+  background-image:url('background_lock_gray.png');
+  background-repeat:no-repeat;
+  background-position: 50% 10px;
+  font-family:Georgia, Garamond; serif; 
+}
+div.note { font-family:Arial; font-size: 9pt }
+div.sans { font-family:Arial; font-size: 9pt }
+div.p { background:#F4F4F4; padding: 0.5em; margin-top: 1em; }
+div.l { background:#F8E0E0; padding: 0.5em; margin-top: 1em; }
+div.r { background:white; padding-left: 2em; }
+div.c { align:center; }
+div.credits { font-family:Arial; text-align: center; color: #808080; position: absolute; bottom: 0; font-size: 8pt; width: 98% }
+div.credits a:link { color: #8080C0; }
+div.credits a:visited { color: #C080C0; }
+td.m { font-family:Courier; }
+img { border: 0; }
+
+div.login {
+  margin: 0 auto;
+  border-radius:8px;
+  box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.5);
+  /* from http://ie.microsoft.com/TEStdrive/Graphics/CSSGradientBackgroundMaker/Default.html */
+  background-image: -ms-linear-gradient(top left, #F0F0F0 0%, #D2D2D2 50%, #E0E0E0 100%);
+  background-image: -moz-linear-gradient(top left, #F0F0F0 0%, #D2D2D2 50%, #E0E0E0 100%);
+  background-image: -o-linear-gradient(top left, #F0F0F0 0%, #D2D2D2 50%, #E0E0E0 100%);
+  background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #F0F0F0), 
+                                     color-stop(0.5, #D2D2D2), color-stop(1, #E0E0E0));
+  background-image: -webkit-linear-gradient(top left, #F0F0F0 0%, #D2D2D2 50%, #E0E0E0 100%);
+  background-image: linear-gradient(to bottom right, #F0F0F0 0%, #D2D2D2 50%, #E0E0E0 100%);
+}
+tr.login, input.login {
+  font-size: 16px;
+}
+form.login { padding: 1em }
+div.bolt { border-radius: 50%; width: 10px; height: 10px; background-color: #CACACA; }
+
