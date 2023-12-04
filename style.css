@@ -15,7 +15,7 @@ div.c { align:center; }
 div.credits { font-family:Arial; text-align: center; color: #808080; position: absolute; bottom: 0; font-size: 8pt; width: 98% }
 div.credits a:link { color: #8080C0; }
 div.credits a:visited { color: #C080C0; }
-td.m { font-family:Courier; }
+td.m { font-family:Courier; user-select: 'text'; }
 img { border: 0; }
 
 div.login {
