@@ -124,7 +124,7 @@ def encrypt_rows(enc_key, rows, out_filename):
     hash = hashlib.md5(f.getvalue()).hexdigest()
     with open(out_filename + '.hash', 'wb') as h:
         h.write(hash)
-    encrypt_fil(enc_key, f, out_filename + '.enc', 16 * 1024 )
+    encrypt_file(enc_key, f, out_filename + '.enc', 16 * 1024 )
     f.close()
 
 
