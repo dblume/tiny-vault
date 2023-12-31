@@ -79,12 +79,12 @@ def password():
     syllables.insert(insertion_point, random.choice(string.digits[2:]))
     insertion_point = random.randrange(len(syllables) + 1)
     syllables.insert(insertion_point, '_')
-    return "".join(syllables)
+    return "".join(syllables).replace('O', 'A').replace('I', 'Y')
 
 
 if __name__=='__main__':
 #    localdir = os.path.abspath(os.path.dirname(sys.argv[0]))
-    for i in xrange(5):
+    for i in xrange(10):
         print password()
-    print "Done."
+#    print "Done."
 
