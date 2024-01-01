@@ -9,7 +9,7 @@ from collections import defaultdict
 
 vowels = ['a', 'e', 'i', 'o', 'u' ]
 
-digraphs = ['br', 'ch', 'ck', 'gh', 'kl', 'ph', 'qu', 'sh', 'st',
+digraphs = ['br', 'ch', 'ck', 'gh', 'ph', 'qu', 'sh', 'st',
             'th', 'wh', 'zh']
 
 consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p',
@@ -73,18 +73,22 @@ def password():
             syllables[-1] += random.choice('aeio')
         word += syllables[-1]
     # Capitalize something and stick a number and a '_' in there.
-    index = random.randrange(len(syllables))
+    index = 0  # random.randrange(len(syllables))
     syllables.insert(index, string.capitalize(syllables.pop(index)))
-    insertion_point = random.randrange(len(syllables) + 1)
+
+    # Make passwords easier to remember, always #_... or ..._#
+    if random.randrange(2):
+        insertion_point = 0  # random.randrange(len(syllables) + 1)
+        syllables.insert(insertion_point, '_')
+    else:
+        insertion_point = len(syllables)  # random.randrange(len(syllables) + 1)
+        syllables.insert(insertion_point, '_')
+        insertion_point = len(syllables)  # random.randrange(len(syllables) + 1)
     syllables.insert(insertion_point, random.choice(string.digits[2:]))
-    insertion_point = random.randrange(len(syllables) + 1)
-    syllables.insert(insertion_point, '_')
     return "".join(syllables).replace('O', 'A').replace('I', 'Y')
 
 
 if __name__=='__main__':
-#    localdir = os.path.abspath(os.path.dirname(sys.argv[0]))
     for i in xrange(10):
         print password()
-#    print "Done."
 
