@@ -1,5 +1,4 @@
-#!/usr/bin/python
-#!C:/Python26/python.exe
+#!/home/dblume/opt/python-3.9.6/bin/python3
 #
 # http://www.evanfosmark.com/2009/01/cross-platform-file-locking-support-in-python/
 
@@ -38,7 +37,7 @@ class FileLock(object):
         while True:
             try:
                 self.fd = os.open(self.lockfile, os.O_CREAT|os.O_EXCL|os.O_RDWR)
-                os.write(self.fd, "%d" % os.getpid())
+                os.write(self.fd, ("%d" % os.getpid()).encode())
                 break;
             except OSError as e:
                 if e.errno != errno.EEXIST:
@@ -84,5 +83,5 @@ class FileLock(object):
         self.release()
 
 if __name__=='__main__':
-    localdir = os.path.abspath( os.path.dirname( sys.argv[0] ) )
+    localdir = os.path.abspath(os.path.dirname(sys.argv[0]))
 

@@ -1,5 +1,4 @@
-#!/usr/bin/python
-#!C:/Python26/python.exe
+#!/home/dblume/opt/python-3.9.6/bin/python3
 #
 # http://www.evanfosmark.com/2009/01/cross-platform-file-locking-support-in-python/
 
@@ -95,7 +94,7 @@ class Transaction_log(object):
                                        action + '.\r\n',
                                        ('david.blume@gmail.com', 'daliblume@gmail.com'))
                     except Exception as e:
-                        print "Could not send email to notify you of the exception. :("
+                        print("Could not send email to notify you of the exception. :(")
                     return False
         return True
 
@@ -106,7 +105,7 @@ class Transaction_log(object):
         # Just keep the last 200 or so
         self.logs = self.logs[:200]
         ip = Map_ip( ip )
-        self.logs.insert( 0, u"%s\t%s\t%s\t%s\n" % ( time.strftime( '%Y-%m-%d, %H:%M:%S', time.localtime() ), \
+        self.logs.insert( 0, "%s\t%s\t%s\t%s\n" % ( time.strftime( '%Y-%m-%d, %H:%M:%S', time.localtime() ), \
                                                      ip,
                                                      action,
                                                      detail ) )
@@ -123,9 +122,9 @@ class Transaction_log(object):
 if __name__=='__main__':
     localdir = os.path.abspath( os.path.dirname(sys.argv[0]))
     tlog = Transaction_log(os.path.join(localdir, 'test_log.txt'))
-    print "tlog.allow", tlog.allow('10.100.12.131', 'login')
+    print("tlog.allow", tlog.allow('10.100.12.131', 'login'))
     tlog.log('10.100.12.131', 'login', 'fail')
     tlog.log('10.100.12.131', 'login', 'fail')
     tlog.log('10.100.12.131', 'login', 'fail')
-    print "Done."
+    print("Done.")
 

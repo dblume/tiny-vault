@@ -1,9 +1,8 @@
-#!/usr/bin/python
-#!C:/Python26/python.exe
+#!/home/dblume/opt/python-3.9.6/bin/python3
 #
 # common.py by David Blume
 
-from __future__ import with_statement
+
 import os
 import sys
 import cgi
@@ -11,19 +10,22 @@ import bcrypt
 import crypt_utils
 import filelock
 import shutil
-from itertools import izip, cycle
+from itertools import cycle
 import base64
 
 def xor_crypt_string(data, key):
-    return ''.join(chr(ord(x) ^ ord(y)) for (x,y) in izip(data, cycle(key)))
+    #with open('dxb.txt', 'w') as f:
+    #    f.write(f'DXB {type(data)=} {data=} {type(key)=} {key=}')
+    return ''.join(chr(ord(x) ^ ord(y)) for (x,y) in zip(data, cycle(key)))
 
 
-def salt_cookie_data(data, salt ):
-    return base64.b64encode(xor_crypt_string(data, salt))
+def salt_cookie_data(data, salt):
+    # print(f'DXB {data=}')
+    return base64.b64encode(xor_crypt_string(data.decode(), salt).encode()).decode()
 
 
 def restore_from_salted_cookie(cookie, salt):
-    return xor_crypt_string(base64.b64decode(cookie), salt)
+    return xor_crypt_string(base64.b64decode(cookie).decode(), salt)
 
 
 def verify_user(localdir, username, password, session=""):
@@ -32,7 +34,7 @@ def verify_user(localdir, username, password, session=""):
     if len(session):
         enc_key = session
     else:
-        enc_key = bcrypt.hashpw(password, bcrypt_salt)[-32:]
+        enc_key = bcrypt.hashpw(password.encode(), bcrypt_salt.encode())[-32:]
     filename = os.path.join(localdir, 'data', username)
     try:
         with filelock.FileLock(filename) as lock:
@@ -70,6 +72,6 @@ error_char = '<span style="color: red; font-size: 32px">&#9888;</span>'
 if __name__=='__main__':
     localdir = os.path.abspath(os.path.dirname(sys.argv[0]))
 
-    print "Done."
+    print("Done.")
 
 

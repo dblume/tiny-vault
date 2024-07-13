@@ -3,21 +3,20 @@
 #
 # http://eli.thegreenplace.net/2010/06/25/aes-encryption-of-files-in-python-with-pycrypto/
 
-from __future__ import with_statement
+
 import string
 import os
 import sys
 import gzip
-import cStringIO  # Use this for in-memory files.
+import io  # Use this for in-memory files.
 from Crypto.Cipher import AES
 import bcrypt
 import hashlib
-import random
+import secrets
 import struct
 import csv
-import hashlib
 import time
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import base64
 
 class crypt_util_error(Exception): pass
@@ -43,7 +42,7 @@ def encrypt_file(key, in_file, out_filename, chunksize=64*1024):
             sizes can be faster for some files and machines.
             chunksize must be divisible by 16.
     """
-    iv = ''.join(chr(random.randint(0, 0xFF)) for i in range(16))
+    iv = secrets.token_bytes(16)
     encryptor = AES.new(key, AES.MODE_CBC, iv)
 #    filesize = os.path.getsize( in_filename )
 
@@ -83,7 +82,7 @@ def decrypt_file(key, in_filename, out_file, chunksize=24*1024):
             chunk = infile.read(chunksize)
             if len(chunk) == 0:
                 break
-            out_file.write(decryptor.decrypt(chunk))
+            out_file.write(decryptor.decrypt(chunk).decode('utf-8'))
         out_file.truncate(origsize)
     return True
 
@@ -118,12 +117,12 @@ def convert_csv_rows(f):
 
 
 def encrypt_rows(enc_key, rows, out_filename):
-    f = cStringIO.StringIO()
+    f = io.StringIO()
     writer = csv.writer(f)
     writer.writerows(rows)
-    hash = hashlib.md5(f.getvalue()).hexdigest()
+    hash = hashlib.md5(f.getvalue().encode('utf-8')).hexdigest()
     with open(out_filename + '.hash', 'wb') as h:
-        h.write(hash)
+        h.write(hash.encode())
     encrypt_file(enc_key, f, out_filename + '.enc', 16 * 1024 )
     f.close()
 
@@ -131,13 +130,13 @@ def encrypt_rows(enc_key, rows, out_filename):
 def decrypt_rows(enc_key, in_filename):
     """ returns True, rows upon success """
     rows = []
-    f = cStringIO.StringIO()
+    f = io.StringIO()
     if not decrypt_file(enc_key, in_filename + '.enc', f, 16 * 1024):
         return False, rows
     f.seek(0)
     with open(in_filename + '.hash', 'rb') as h:
         file_hash = h.read()
-    if file_hash != hashlib.md5(f.getvalue()).hexdigest():
+    if file_hash != hashlib.md5(f.getvalue().encode('utf-8')).hexdigest().encode():
         return False, rows
     reader = csv.reader(f)
     for row in reader:
@@ -150,17 +149,17 @@ if __name__=='__main__':
     import filelock
     localdir = os.path.abspath(os.path.dirname(sys.argv[0]))
     username = 'test'
-    print "Start!"
+    print("Start!")
 
     rows = read_csv(os.path.join(localdir, 'splash_id_archive_CC_ID_fewer_columns.csv'))
 
     bcrypt_salt = '$2a$12$0S7xZwmn6w4xmuY1x5X26O' # Made by bcrypt.gensalt()
-    enc_key = bcrypt.hashpw("passw0rd", bcrypt_salt)[-32:]
+    enc_key = bcrypt.hashpw(b"passw0rd", bcrypt_salt.encode())[-32:]
     encrypt_rows(enc_key, rows, os.path.join(localdir, 'data', username))
 
     with filelock.FileLock(os.path.join(localdir, 'data', username)) as lock:
         succeeded, out_rows = decrypt_rows(enc_key, os.path.join(localdir, 'data', username))
-    print "decrypt_rows succeeded =", succeeded
+    print("decrypt_rows succeeded =", succeeded)
 
 #    my_hash = hashlib.sha224("Nobody inspects the spammish repetition").hexdigest()
 #    print my_hash
@@ -189,4 +188,4 @@ if __name__=='__main__':
 #                  os.path.join(localdir, "source_file_for_encryption.txt.enc"), \
 #                  os.path.join(localdir, "decrypted_file.txt"))
 
-    print "Done."
+    print("Done.")

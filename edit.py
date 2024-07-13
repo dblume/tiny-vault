@@ -1,5 +1,4 @@
-#!/usr/bin/python
-#!C:/Python26/python.exe
+#!/home/dblume/opt/python-3.9.6/bin/python3
 #
 # edit.py by David Blume
 
@@ -7,8 +6,9 @@ import os
 import sys
 import codecs
 import time
-import Cookie
+import http.cookies
 import cgi, cgitb
+import html
 import constants
 import string
 import common
@@ -17,9 +17,9 @@ import filelock
 import transactionlog
 import gen_password
 
-cgitb.enable(display=0, logdir="/tmp")
+cgitb.enable(display=0, logdir="tmp")
 
-def print_edit_form( row ):
+def print_edit_form(row):
 #   ID, Type, Description, Username, Password, URL, Custom, Timestamp, Notes
 #   (type) desc user sess url custom notes
     suggested_password = " (or change it to " + gen_password.password() + ")"
@@ -30,15 +30,15 @@ def print_edit_form( row ):
         delete_button = ' &nbsp;<input type="submit" name="submit" onclick="document.pressed=this.value" value="Delete">'
         last_edited = '<br /><span style="color:grey">Last edited on %s.</span>' % (time.strftime("%Y-%m-%d", time.localtime(float(row[7]))),)
     defaults = (row[2], row[3], common.form_quote(row[4]), suggested_password, row[5], row[6], row[8], last_edited, delete_button)
-    print constants.edit_form_text_start
-    print '<select name="type">'
-    for key in sorted( constants.type_map.keys() ):
+    print(constants.edit_form_text_start)
+    print('<select name="type">')
+    for key in sorted(constants.type_map.keys()):
         selected = ""
         if row[1] == key:
             selected = " selected"
-        print '    <option%s value="%s">%s</option>' % ( selected, constants.type_map[key], key )
-    print '</select><input type="hidden" name="id" value="%s">' % row[0]
-    print constants.edit_form_text_end % defaults
+        print('    <option%s value="%s">%s</option>' % ( selected, constants.type_map[key], key ))
+    print('</select><input type="hidden" name="id" value="%s">' % row[0])
+    print(constants.edit_form_text_end % defaults)
 
 def get_cookie(my_cookie):
     have_cookie = False
@@ -46,14 +46,14 @@ def get_cookie(my_cookie):
     session = ''
     verified_session = False
     rows = []
-    if os.environ.has_key('HTTP_COOKIE'):
+    if 'HTTP_COOKIE' in os.environ:
         my_cookie.load(os.environ['HTTP_COOKIE'])
-        if my_cookie.has_key('user'):
+        if 'user' in my_cookie:
             have_cookie = True
             username = my_cookie['user'].value
-            my_cookie['user']['domain'] = '.secure.dlma.com'
-            if my_cookie.has_key('sess'):
-                my_cookie['sess']['domain'] = '.secure.dlma.com'
+            my_cookie['user']['domain'] = '.' + localdir_basename
+            if 'sess' in my_cookie:
+                my_cookie['sess']['domain'] = '.' + localdir_basename
                 if len(my_cookie['sess'].value) > 0:
                     session = common.restore_from_salted_cookie( my_cookie['sess'].value, os.environ['REMOTE_ADDR'] )
                     verified_session, enc_key, rows, verify_msg = common.verify_user(localdir, username, "", session)
@@ -71,48 +71,48 @@ def get_cookie(my_cookie):
         verify_msg = "No HTTP_COOKIE at all.<br />"
     return have_cookie, verified_session, username, session, rows, verify_msg
 
-def get_row_index( rows, id ):
+def get_row_index(rows, id):
     found_row = False
-    for i, row in enumerate( rows ):
-        if int( id ) == int( row[0] ):
+    for i, row in enumerate(rows):
+        if int(id) == int(row[0]):
             found_row = True
             break
     return found_row, i
 
-def delete_row( localdir, username, session, rows, id ):
+def delete_row(localdir, username, session, rows, id):
     succeeded = False
 
-    found_row, index = get_row_index( rows, id )
+    found_row, index = get_row_index(rows, id)
     if not found_row:
         return False
 
-    rows.pop( index )
+    rows.pop(index)
 
     try:
-        filename = os.path.join( localdir, 'data', username )
-        with filelock.FileLock( filename ) as lock:
+        filename = os.path.join(localdir, 'data', username)
+        with filelock.FileLock(filename) as lock:
             # Backup
-            common.backup_files( filename )
-            crypt_utils.encrypt_rows( session, rows, filename )
+            common.backup_files(filename)
+            crypt_utils.encrypt_rows(session, rows, filename)
             succeeded = True
     except filelock.FileLockException as e:
         succeeded = False
     return succeeded
 
-def change_row( localdir, username, session, rows, row ):
+def change_row(localdir, username, session, rows, row):
     succeeded = False
 
-    found_row, index = get_row_index( rows, row[0] )
+    found_row, index = get_row_index(rows, row[0])
     if not found_row:
-        rows.append( row )
+        rows.append(row)
     else:
         rows[index] = row
 
     try:
-        filename = os.path.join( localdir, 'data', username )
-        with filelock.FileLock( filename ) as lock:
-            common.backup_files( filename )
-            crypt_utils.encrypt_rows( session, rows, filename )
+        filename = os.path.join(localdir, 'data', username)
+        with filelock.FileLock(filename) as lock:
+            common.backup_files(filename)
+            crypt_utils.encrypt_rows(session, rows, filename)
             succeeded = True
     except filelock.FileLockException as e:
         succeeded = False
@@ -129,9 +129,10 @@ def get_new_id(rows):
 
 if __name__=='__main__':
     localdir = os.path.abspath(os.path.dirname(sys.argv[0]))
+    localdir_basename = os.path.basename(localdir)
 
     form_data = cgi.FieldStorage()
-    my_cookie = Cookie.SimpleCookie()
+    my_cookie = http.cookies.SimpleCookie()
     verified_session = False
     username = ''
     session = ''
@@ -139,7 +140,7 @@ if __name__=='__main__':
     transaction_message = ''
     verify_msg = ''
     have_cookie = False
-    row = [-1, "Web Logins", "", "", gen_password.password(), "http://", "", 0, ""]
+    row = [-1, "Web Logins", "", "", gen_password.password(), "https://", "", 0, ""]
     target = "new"
     should_print_edit_form = True
     tlog = transactionlog.Transaction_log(os.path.join(localdir, 'log.txt'))
@@ -169,20 +170,20 @@ if __name__=='__main__':
             url = ''
             custom = ''
             notes = ''
-            rev_type_map = dict((v,k) for k, v in constants.type_map.iteritems())
+            rev_type_map = dict((v,k) for k, v in constants.type_map.items())
             type = rev_type_map[form_data['type'].value]
             if 'desc' in form_data:
-                desc = cgi.escape(form_data['desc'].value)
+                desc = html.escape(form_data['desc'].value)
             if 'user' in form_data:
-                user = cgi.escape(form_data['user'].value)
+                user = html.escape(form_data['user'].value)
             if 'sess' in form_data:
-                sess = cgi.escape(form_data['sess'].value)
+                sess = html.escape(form_data['sess'].value)
             if 'url' in form_data:
                 url = form_data['url'].value
             if 'custom' in form_data:
-                custom = cgi.escape(form_data['custom'].value)
+                custom = html.escape(form_data['custom'].value)
             if 'notes' in form_data:
-                notes = cgi.escape(form_data['notes'].value)
+                notes = html.escape(form_data['notes'].value)
             have_cookie, verified_session, username, session, rows, verify_msg = get_cookie(my_cookie)
             row_change_text = 'changed'
             if int(id) == -1:
@@ -225,39 +226,39 @@ if __name__=='__main__':
 
 #    if have_cookie:
 #        print my_cookie
-    print "Content-type: text/html; charset=ISO-8859-1\n\n"
+    print("Content-type: text/html; charset=ISO-8859-1\n\n")
 
-    print constants.html_head_text
+    print(constants.html_head_text)
     if should_print_edit_form:
-        print '  <meta name="viewport" content="width=400, initial-scale=1.0"/> <!-- maximum-scale=1.0; user-scalable=0;"/>  -->'
-        print constants.edit_form_validator_text
+        print('  <meta name="viewport" content="width=400, initial-scale=1.0"/> <!-- maximum-scale=1.0; user-scalable=0;"/>  -->')
+        print(constants.edit_form_validator_text)
         default_focus_text = ' OnLoad="document.editform.desc.focus();"'
     else:
         default_focus_text = ''
 
-    print constants.close_head_text % (default_focus_text,)
+    print(constants.close_head_text % (default_focus_text,))
 
     #
     # Begin body
     #
-    print constants.html_body_prefix_text
+    print(constants.html_body_prefix_text)
 
     if len(special_message):
-        print special_message
+        print(special_message)
 
     # print '<a href="/index.py">Back to the list</a>.<div style="text-align:right">%s <a href="index.py?do=logout">logout</a></div><br />' % username
-    print '<div><span><a href="/index.py">Back to the list</a>.</span><div style="float: right; text-align:right">%s <a href="index.py?do=logout">logout</a></div></div><br />' % username
+    print('<div><span><a href="/index.py">Back to the list</a>.</span><div style="float: right; text-align:right">%s <a href="index.py?do=logout">logout</a></div></div><br />' % username)
 
     if len(transaction_message):
-        print transaction_message
+        print(transaction_message)
 
 #    for k in sorted( form_data.keys() ):
 #        print "%s: %s<br />" % ( k, form_data[k] )
 
     if should_print_edit_form:
-        print '<div style="position:absolute; top:30%; margin-top: -90px; left:50%; margin-left: -188px">'
+        print('<div style="position:absolute; top:30%; margin-top: -90px; left:50%; margin-left: -188px">')
         print_edit_form( row )
-        print '</div>'
+        print('</div>')
 
-    print constants.html_footer_text
+    print(constants.html_footer_text)
 

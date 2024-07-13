@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+DirectoryIndex index.php index.html index.py
+AddCharset UTF-8 .txt
+## Don't allow access to git directories
+<IfModule alias_module>
+    RedirectMatch 404 /\.git
+</IfModule>

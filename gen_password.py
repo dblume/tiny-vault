@@ -1,5 +1,4 @@
-#!/usr/bin/python
-#!C:/Python26/python.exe
+#!/home/dblume/opt/python-3.9.6/bin/python3
 #
 # http://www.evanfosmark.com/2009/07/creating-fake-words/
 
@@ -74,7 +73,7 @@ def password():
         word += syllables[-1]
     # Capitalize something and stick a number and a '_' in there.
     index = 0  # random.randrange(len(syllables))
-    syllables.insert(index, string.capitalize(syllables.pop(index)))
+    syllables.insert(index, str.capitalize(syllables.pop(index)))
 
     # Make passwords easier to remember, always #_... or ..._#
     if random.randrange(2):
@@ -89,6 +88,6 @@ def password():
 
 
 if __name__=='__main__':
-    for i in xrange(10):
-        print password()
+    for i in range(10):
+        print(password())
 

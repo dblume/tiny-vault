@@ -168,6 +168,6 @@ Greg Weber's <a href="http://gregweber.info/projects/uitablefilter">uitablefilte
 <a href="http://www.pycrypto.org/">pycrypto</a> (with <a href="http://eli.thegreenplace.net/2010/06/25/aes-encryption-of-files-in-python-with-pycrypto/">Eli's help</a>),
 <a href="http://code.google.com/p/py-bcrypt/">py-bcrypt</a> and Evan Fosmark's
 <a href="http://www.evanfosmark.com/2009/01/cross-platform-file-locking-support-in-python/">filelock</a>;
-otherwise &copy; 2011-2020, David Blume</div>"""
+otherwise &copy; 2011-2024, David Blume</div>"""
 
 html_footer_text = """</body></html>"""
