@@ -29,12 +29,10 @@ def send_email(subject, message, toaddrs,
 
 
 def Map_ip(ip):
-    if ip == '50.224.7.235':  # was '12.155.29.254', '12.155.29.1'
+    if ip == '12.2.96.202':  # was 50.224.7.235, 12.155.29.254, 12.155.29.1
         ip = 'work'
-    elif ip == '67.160.193.38':
+    elif ip == '67.160.193.136':
         ip = 'home'
-    elif ip.startswith('128.195.97'):
-        ip = 'uci'
     return ip
 
 
@@ -58,6 +56,7 @@ class Transaction_log(object):
             except filelock.FileLockException as e:
                 pass
 
+
     def allow(self, ip_addr, action):
         """ return whether or not the action should be allowed """
         if action == 'login':
@@ -65,22 +64,28 @@ class Transaction_log(object):
             cur_time = time.localtime()
             failed_logins_by_ip = defaultdict(list)
             consecutive_failed_login_count = 0
+            oldest_consecutive_failed_login_time = None
+            consecutive_failed_login_counter_go = True
             for line in self.logs:
                 log_time_string, log_ip, log_action, log_detail = line.rstrip('\n').split('\t')
                 if log_action == 'login':
                     if log_detail.split(' ')[-1].find('fail') != -1:
                         failed_logins_by_ip[log_ip].append(time.strptime(log_time_string, '%Y-%m-%d, %H:%M:%S'))
-                        consecutive_failed_login_count += 1
+                        if consecutive_failed_login_counter_go:
+                            consecutive_failed_login_count += 1
+                            oldest_consecutive_failed_login_time = log_time_string;
                     else:
-                        consecutive_failed_login_count = 0
+                        consecutive_failed_login_counter_go = False
 
             too_many_recent_failed_logins = False
             max_number_failed_logins = 8
+
+            # This checks for too many frequent failed logins regardless of origin IP
             if consecutive_failed_login_count > max_number_failed_logins:
-                log_time_string, unused = self.logs[max_number_failed_logins-1].split( '\t', 1 )
-                if time.time() - time.mktime( time.strptime( log_time_string, '%Y-%m-%d, %H:%M:%S' ) ) < 120:
+                if time.time() - time.mktime(time.strptime(oldest_consecutive_failed_login_time, '%Y-%m-%d, %H:%M:%S')) < 16:
                     too_many_recent_failed_logins = True
 
+            # This now check for the track record of the current IP asking:
             if len(failed_logins_by_ip[ip]) > 5 or too_many_recent_failed_logins:
                 if time.time() - time.mktime(failed_logins_by_ip[ip][4]) < 60:
                     cur_time = time.strftime('%H:%M:%S, %Y-%m-%d', time.localtime())

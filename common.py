@@ -45,6 +45,10 @@ def verify_user(localdir, username, password, session=""):
         succeeded = False
         rows = []
         message = "filelock timed out."
+    except UnicodeDecodeError as e:
+        succeeded = False
+        rows = []
+        message = ""  # This message gets displayed, don't want to say anything yet.
     return succeeded, enc_key, rows, message
 
 
