@@ -40,7 +40,7 @@ def main(old_user, old_pass, new_user, new_pass, debug):
         print("Failed to decrypt rows to new file. Exception:", e)
 
     if not succeeded:
-        print("Failed to read the old file. Bad password or username?")
+        print("Failed to read the old file. Bad passphrase or username?")
         return
 
     new_filename = os.path.join(localdir, 'data', new_user)

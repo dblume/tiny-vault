@@ -55,12 +55,12 @@ if __name__=='__main__':
         logger.debug('Have user and pass')
         should_print_login_form = False
         username = form_data["user"].value.strip()
-        password = form_data["pass"].value
+        passphrase = form_data["pass"].value
 
         if not user_text_is_valid(username):
             verified = False
         else:
-            verified, enc_key, rows, verify_msg = common.verify_user(localdir, username, password)
+            verified, enc_key, rows, verify_msg = common.verify_user(localdir, username, passphrase)
         if not verified:
             should_print_failed_login = True
             should_print_login_form = True
@@ -153,7 +153,7 @@ if __name__=='__main__':
         if not too_many_login_attempts:
             print('<div style="position:absolute; top:25%; margin-top: -48px; left:50%; margin-left: -203px">')
             if should_print_failed_login:
-                print("<p><b>Sorry! That username or password is incorrect.</b></p>")
+                print("<p><b>Sorry! That username or passphrase is incorrect.</b></p>")
                 if len(verify_msg):
                     print("<p>%s</p>" % verify_msg)
             print_login_form(username)
