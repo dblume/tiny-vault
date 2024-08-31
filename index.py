@@ -10,6 +10,7 @@ import http.cookies
 import cgi, cgitb
 import constants
 import string
+from pathlib import Path
 import common
 import transactionlog
 import logging
@@ -45,6 +46,7 @@ if __name__=='__main__':
     special_message = ''
     verify_msg = ''
     have_cookie = False
+    cookie_salt = 'qxNyyioe' + os.environ['REMOTE_ADDR']
 
     should_print_failed_login = False;
     logger.debug('Before transaction log')
@@ -73,13 +75,15 @@ if __name__=='__main__':
             my_cookie['user']['domain'] = '.' + localdir_basename
             my_cookie['user']['secure'] = 'on'
             my_cookie['user']['httponly'] = 'on'
-            my_cookie['sess'] = common.salt_cookie_data(enc_key, os.environ['REMOTE_ADDR'])
+            my_cookie['sess'] = common.salt_cookie_data(enc_key, cookie_salt)
             my_cookie['sess']['max-age'] = 30*60
             my_cookie['sess']['domain'] = '.' + localdir_basename
             my_cookie['sess']['secure'] = 'on'
             my_cookie['sess']['httponly'] = 'on'
             have_cookie = True
             tlog.log(os.environ['REMOTE_ADDR'], 'login', username[:2] + "\u2026")
+            # touch a file at time of sign-in
+            Path('data', username + '.sessiontime').touch()
     else:
         should_print_login_form = True
         reset_cookie = False
@@ -103,12 +107,15 @@ if __name__=='__main__':
                     have_cookie = True
                     # my_cookie['sess']['expires'] = 'Wed, 21 Oct 2015 07:28:00 GMT'
                 elif 'sess' in my_cookie:
-                    session = common.restore_from_salted_cookie(my_cookie['sess'].value, os.environ['REMOTE_ADDR'])
+                    session = common.restore_from_salted_cookie(my_cookie['sess'].value, cookie_salt)
                     my_cookie['sess']['domain'] = '.' + localdir_basename
                     verified, enc_key, rows, verify_msg = common.verify_user(localdir, username, "", session)
                     if verified:
-                        tlog.log(os.environ['REMOTE_ADDR'], 'view', '')
-                        should_print_login_form = False
+                        if Path('data', username + '.sessiontime').stat().st_mtime > time.time() - 60 * 30:
+                            tlog.log(os.environ['REMOTE_ADDR'], 'view', '')
+                            should_print_login_form = False
+                        else:
+                            tlog.log(os.environ['REMOTE_ADDR'], 'view', username[:2] + "\u2026" + ' stale cookie rejection')
                     else:
                         tlog.log(os.environ['REMOTE_ADDR'], 'view', username[:2] + "\u2026" + ' returning cookie authentication failed')
 
