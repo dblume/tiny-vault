@@ -46,7 +46,6 @@ if __name__=='__main__':
     special_message = ''
     verify_msg = ''
     have_cookie = False
-    cookie_salt = 'qxNsyioe' + os.environ['REMOTE_ADDR']
 
     should_print_failed_login = False;
     logger.debug('Before transaction log')
@@ -75,7 +74,7 @@ if __name__=='__main__':
             my_cookie['user']['domain'] = '.' + localdir_basename
             my_cookie['user']['secure'] = 'on'
             my_cookie['user']['httponly'] = 'on'
-            my_cookie['sess'] = common.salt_cookie_data(enc_key, cookie_salt)
+            my_cookie['sess'] = common.salt_cookie_data(enc_key, common.salt())
             my_cookie['sess']['max-age'] = 30*60
             my_cookie['sess']['domain'] = '.' + localdir_basename
             my_cookie['sess']['secure'] = 'on'
@@ -107,7 +106,7 @@ if __name__=='__main__':
                     have_cookie = True
                     # my_cookie['sess']['expires'] = 'Wed, 21 Oct 2015 07:28:00 GMT'
                 elif 'sess' in my_cookie:
-                    session = common.restore_from_salted_cookie(my_cookie['sess'].value, cookie_salt)
+                    session = common.restore_from_salted_cookie(my_cookie['sess'].value, common.salt())
                     my_cookie['sess']['domain'] = '.' + localdir_basename
                     verified, enc_key, rows, verify_msg = common.verify_user(localdir, username, "", session)
                     if verified:

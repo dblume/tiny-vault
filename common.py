@@ -19,6 +19,11 @@ def xor_crypt_string(data, key):
     return ''.join(chr(ord(x) ^ ord(y)) for (x,y) in zip(data, cycle(key)))
 
 
+def salt():
+    # Used only for cookies.
+    return 'qxNsyioe' + os.environ['REMOTE_ADDR']
+
+
 def salt_cookie_data(data, salt):
     # print(f'DXB {data=}')
     return base64.b64encode(xor_crypt_string(data.decode(), salt).encode()).decode()

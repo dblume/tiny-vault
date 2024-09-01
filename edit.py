@@ -55,8 +55,7 @@ def get_cookie(my_cookie):
             if 'sess' in my_cookie:
                 my_cookie['sess']['domain'] = '.' + localdir_basename
                 if len(my_cookie['sess'].value) > 0:
-                    cookie_salt = 'qxNyyioe' + os.environ['REMOTE_ADDR']
-                    session = common.restore_from_salted_cookie(my_cookie['sess'].value, cookie_salt)
+                    session = common.restore_from_salted_cookie(my_cookie['sess'].value, common.salt())
                     verified_session, enc_key, rows, verify_msg = common.verify_user(localdir, username, "", session)
                 else:
                     verify_msg = "The session cookie is empty. <strong>macOS: Try relaunching Safari. (Really.)</strong><br />"
