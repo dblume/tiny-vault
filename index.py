@@ -46,7 +46,7 @@ if __name__=='__main__':
     special_message = ''
     verify_msg = ''
     have_cookie = False
-    cookie_salt = 'qxNyyioe' + os.environ['REMOTE_ADDR']
+    cookie_salt = 'qxNsyioe' + os.environ['REMOTE_ADDR']
 
     should_print_failed_login = False;
     logger.debug('Before transaction log')
@@ -111,11 +111,13 @@ if __name__=='__main__':
                     my_cookie['sess']['domain'] = '.' + localdir_basename
                     verified, enc_key, rows, verify_msg = common.verify_user(localdir, username, "", session)
                     if verified:
-                        if Path('data', username + '.sessiontime').stat().st_mtime > time.time() - 60 * 30:
+                        sess_path = Path('data', username + '.sessiontime')
+                        if sess_path.exists() and sess_path.stat().st_mtime > time.time() - 60 * 30:
                             tlog.log(os.environ['REMOTE_ADDR'], 'view', '')
                             should_print_login_form = False
                         else:
-                            tlog.log(os.environ['REMOTE_ADDR'], 'view', username[:2] + "\u2026" + ' stale cookie rejection')
+                            tlog.log(os.environ['REMOTE_ADDR'], 'view', username[:2] + "\u2026" + ' session rejection')
+                            special_message = 'Session missing or expired.'
                     else:
                         tlog.log(os.environ['REMOTE_ADDR'], 'view', username[:2] + "\u2026" + ' returning cookie authentication failed')
 
