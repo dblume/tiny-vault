@@ -1,0 +1,7 @@
+data/
+.well-known/
+tmp/
+config.py
+index.py.log
+log.txt
+smtp_creds.py
