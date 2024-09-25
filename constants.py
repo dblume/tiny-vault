@@ -146,7 +146,9 @@ $(document).ready(function(){
 
   </script>"""
 
-table_header = """<div class="sans"><form id="filter-form" name="filterform">Filter: <input name="filter" id="filter" value="" maxlength="30" size="30" type="text" autocapitalize="off"> &nbsp;&nbsp;| &nbsp;<a href="edit.py?id=new">Create a new row</a>.</form></div>
+table_header = """<div class="sans"><form id="filter-form" name="filterform">Filter: <input name="filter" id="filter" value="" maxlength="30" size="30" type="text" autocapitalize="off">
+&nbsp;&nbsp;| &nbsp;<a href="edit.py?id=new">Create a new row</a>.&nbsp;
+| &nbsp;<span style="color:#00827F;"><span style="color:white; background-color:#00827F;">ℹ</span> New feature: Selected text gets automatically copied to the clipboard.</span></div></form>
 <table cellspacing="1" id="myTable" class="tablesorter">
 <thead>
 <tr>
