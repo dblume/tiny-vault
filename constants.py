@@ -135,6 +135,9 @@ $(document).ready(function(){
     $.uiTableFilter( theTable, this.value );
   })
 
+  // Merely selecting text copies it to the clipboard
+  document.addEventListener("selectionchange", () => { document.execCommand("copy"); });
+
   $('#filter-form').submit(function(){
     theTable.find("tbody > tr:visible > td:eq(1)").mousedown();
     return false;
