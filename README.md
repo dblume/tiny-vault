@@ -11,8 +11,8 @@ A tiny website that attempts to securely store passwords.
     git clone https://github.com/dblume/tiny-vault.git
     cd tiny-vault
     python3 -m pip install -r requirements.txt
-    mkdir data
     cp .htaccess.sample .htaccess
+    cp data/.htaccess.sample data/.htaccess
     cp config.py.sample config.py
     TODO: Edit config.py
     cp smtp_creds.py.sample smtp_creds.py
