@@ -17,7 +17,7 @@ class Transaction_log_exception( Exception ):
 
 
 def send_email(subject, message, toaddrs,
-        fromaddr='"secure.dlma %s" <%s>' % (os.path.basename(__file__), smtp_creds.user)):
+        fromaddr='"%s %s" <%s>' % (os.environ['SERVER_NAME'], os.path.basename(__file__), smtp_creds.user)):
     """ Sends Email """
     smtp = smtplib.SMTP(smtp_creds.server, port=smtp_creds.port)
     smtp.login(smtp_creds.user, smtp_creds.passw)
@@ -90,14 +90,11 @@ class Transaction_log(object):
                 if time.time() - time.mktime(failed_logins_by_ip[ip][4]) < 60:
                     cur_time = time.strftime('%H:%M:%S, %Y-%m-%d', time.localtime())
                     try:
-                        send_email('secure.dlma.com ' + action + ' disallowed',
-                                   # 'At ' + cur_time  + ' http://www.magic-net.info/my-ip-and-city-information.dnslookup?fname=' + \
-                                   # ip + '&Find+IP+location=Find+IP\r\nSee the logs at: https://secure.dlma.com/log.txt\r\nAction attempted: ' \
-                                   # + action + '.\r\n',
+                        send_email(os.environ['SERVER_NAME'] + ' ' + action + ' disallowed',
                                    'At ' + cur_time  + ' http://www.iplocation.net/index.php?query=' + ip_addr + \
-                                       '\r\nSee the logs at: https://secure.dlma.com/log.txt\r\nAction attempted: ' + \
+                                       '\r\nSee the logs at: https://' + os.environ['SERVER_NAME'] + '/log.txt\r\nAction attempted: ' + \
                                        action + '.\r\n',
-                                       ('david.blume@gmail.com', 'daliblume@gmail.com'))
+                                       (smtp_creds.default_recipient, ))
                     except Exception as e:
                         print("Could not send email to notify you of the exception. :(")
                     return False

@@ -9,6 +9,7 @@ A tiny website that attempts to securely store passwords.
 ## Getting Started
 
     git clone https://github.com/dblume/tiny-vault.git
+    cd tiny-vault
     python3 -m pip install -r requirements.txt
     cp .htaccess.sample .htaccess
     cp config.py.sample config.py

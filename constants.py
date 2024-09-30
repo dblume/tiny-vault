@@ -1,8 +1,8 @@
 html_head_text = """<!DOCTYPE html>
 <html><head>
   <meta charset="UTF-8">
-  <title>secure.dlma.com</title>
-  <link rel="shortcut icon" href="https://secure.dlma.com/favicon.ico" />
+  <title>%s</title>
+  <link rel="shortcut icon" href="https://%s/favicon.ico" />
   <link rel="stylesheet" type="text/css" media="screen" href="style.css">"""
 
 html_head_table_style = '<link rel="stylesheet" href="tablesorter.css" type="text/css" media="print, projection, screen" />'

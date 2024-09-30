@@ -125,7 +125,7 @@ if __name__=='__main__':
         print(my_cookie)
     print("Content-type: text/html; charset=utf-8\n\n")
 
-    print(constants.html_head_text)
+    print(constants.html_head_text % (os.environ['SERVER_NAME'], os.environ['SERVER_NAME']))
     too_many_login_attempts = not tlog.allow(os.environ['REMOTE_ADDR'], 'login')
     if should_print_login_form:
         if not too_many_login_attempts:
