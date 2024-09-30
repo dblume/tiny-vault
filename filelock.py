@@ -1,4 +1,4 @@
-#!/home/dblume/opt/python-3.9.6/bin/python3
+#!/usr/bin/env python3
 #
 # http://www.evanfosmark.com/2009/01/cross-platform-file-locking-support-in-python/
 
@@ -83,5 +83,6 @@ class FileLock(object):
         self.release()
 
 if __name__=='__main__':
+    import sys
     localdir = os.path.abspath(os.path.dirname(sys.argv[0]))
 
