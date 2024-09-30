@@ -2,4 +2,4 @@ server = 'mail.yourserver.com'
 port = 587
 user = 'user@yourserver.com'
 passw = 'mooltipass'
-default_recipient = 'you@yourserver.com'
+default_recipients = ('you@yourserver.com', )

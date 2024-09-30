@@ -11,6 +11,7 @@ import smtplib
 from collections import defaultdict
 import smtp_creds
 import logging
+import config
 
 class Transaction_log_exception( Exception ):
     pass
@@ -29,10 +30,9 @@ def send_email(subject, message, toaddrs,
 
 
 def Map_ip(ip):
-    if ip == '12.2.96.202':  # was 50.224.7.235, 12.155.29.254, 12.155.29.1
-        ip = 'work'
-    elif ip == '67.160.193.136':
-        ip = 'home'
+    """Emits nicknames for certain IP addresses."""
+    if ip in config.ip_to_nickname:
+        ip = config.ip_to_nickname[ip]
     return ip
 
 
@@ -94,7 +94,7 @@ class Transaction_log(object):
                                    'At ' + cur_time  + ' http://www.iplocation.net/index.php?query=' + ip_addr + \
                                        '\r\nSee the logs at: https://' + os.environ['SERVER_NAME'] + '/log.txt\r\nAction attempted: ' + \
                                        action + '.\r\n',
-                                       (smtp_creds.default_recipient, ))
+                                       smtp_creds.default_recipients)
                     except Exception as e:
                         print("Could not send email to notify you of the exception. :(")
                     return False

@@ -2,3 +2,4 @@
 bcrypt_salt = '$2b$12$s9yDL/TkUPWkZOed3wBZyu'
 cookie_salt = 'Tq7z4dcW'
 complex_password_alg = 1
+ip_to_nickname={'192.168.1.1': 'home'}
