@@ -1,7 +1,4 @@
 #!/usr/bin/env python3
-#
-# http://www.evanfosmark.com/2009/01/cross-platform-file-locking-support-in-python/
-
 import os
 import sys
 import filelock
@@ -10,11 +7,7 @@ import codecs
 import smtplib
 from collections import defaultdict
 import smtp_creds
-import logging
 import config
-
-class Transaction_log_exception( Exception ):
-    pass
 
 
 def send_email(subject, message, toaddrs,
@@ -22,10 +15,9 @@ def send_email(subject, message, toaddrs,
     """ Sends Email """
     smtp = smtplib.SMTP(smtp_creds.server, port=smtp_creds.port)
     smtp.login(smtp_creds.user, smtp_creds.passw)
-    smtp.sendmail( fromaddr,
-                   toaddrs,
-                   "Content-Type: text/plain; charset=\"us-ascii\"\r\nFrom: %s\r\nTo: %s\r\nSubject: %s\r\n%s" % \
-                   ( fromaddr, ", ".join( toaddrs ), subject, message ) )
+    smtp.sendmail(fromaddr, toaddrs,
+                  "Content-Type: text/plain; charset=\"us-ascii\"\r\nFrom: %s\r\nTo: %s\r\nSubject: %s\r\n%s" % \
+                  (fromaddr, ", ".join(toaddrs), subject, message))
     smtp.quit()
 
 
@@ -106,20 +98,19 @@ class Transaction_log(object):
             action can be: "login", "logout", "edit", "delete", """
         # Just keep the last 200 or so
         self.logs = self.logs[:200]
-        ip = Map_ip( ip )
-        self.logs.insert( 0, "%s\t%s\t%s\t%s\n" % ( time.strftime( '%Y-%m-%d, %H:%M:%S', time.localtime() ), \
-                                                     ip,
-                                                     action,
-                                                     detail ) )
+        ip = Map_ip(ip)
+        self.logs.insert(0, "%s\t%s\t%s\t%s\n" % (time.strftime('%Y-%m-%d, %H:%M:%S', time.localtime()), \
+                                                  ip, action, detail))
         try:
-            with filelock.FileLock( self.filename ) as lock:
-                f = codecs.open( self.filename, 'w', 'utf-8' )
+            with filelock.FileLock(self.filename) as lock:
+                f = codecs.open(self.filename, 'w', 'utf-8')
                 try:
-                    f.writelines( self.logs )
+                    f.writelines(self.logs)
                 finally:
                     f.close()
         except filelock.FileLockException as e:
             pass
+
 
 if __name__=='__main__':
     localdir = os.path.abspath( os.path.dirname(sys.argv[0]))
