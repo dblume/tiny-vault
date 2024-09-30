@@ -1,10 +1,11 @@
-#!/home/dblume/opt/python-3.9.6/bin/python3
+#!/usr/bin/env python3
 #
 # http://www.evanfosmark.com/2009/07/creating-fake-words/
 
 import string
 import secrets
 from collections import defaultdict
+import config
 
 vowels = 'aeiou'
 
@@ -53,7 +54,7 @@ def password():
     # More secure, but less readable
     alphabet = string.ascii_letters + string.digits + \
                string.punctuation.translate(str.maketrans('', '', '\'"\\`'))
-    while False:
+    while config.complex_password_alg:
         password = ''.join(secrets.choice(alphabet) for i in range(12))
         if (any(c.islower() for c in password)
                and any(c.isupper() for c in password)

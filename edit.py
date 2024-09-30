@@ -226,7 +226,7 @@ if __name__=='__main__':
 
 #    if have_cookie:
 #        print my_cookie
-    print("Content-type: text/html; charset=ISO-8859-1\n\n")
+    print("Content-type: text/html; charset=utf-8\n\n")
 
     print(constants.html_head_text)
     if should_print_edit_form:

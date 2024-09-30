@@ -12,7 +12,7 @@
 # To convert the existing database "test" to "aaron", you have to pass "test"
 # as an argument, and specify three options.
 #
-#  ./new_password_and_user.py --new_user=aaron --old_pass=passw0rd --new_pass=sdfkj23& test
+#  ./new_password_and_user.py --new_user=aaron --old_pass=passw0rd --new_pass=sdfkj23_ test
 #
 # ^ See that extra space at the beginning?  That's so the command won't go in the history.
 import os
@@ -23,14 +23,14 @@ import common
 import bcrypt
 import crypt_utils
 import filelock
+import config
 
-bcrypt_salt = '$2a$12$0S7xZwmn6w4xmuY1x5X26O' # Made by bcrypt.gensalt(), same as in common.verify_user()
 
 def main(old_user, old_pass, new_user, new_pass, debug):
     start_time = time.time()
     localdir = os.path.abspath(os.path.dirname(sys.argv[0]))
     succeeded = False
-    enc_key = bcrypt.hashpw(old_pass.encode(), bcrypt_salt)[-32:]
+    enc_key = bcrypt.hashpw(old_pass.encode(), config.bcrypt_salt)[-32:]
     rows = []
     try:
         old_filename = os.path.join(localdir, 'data', old_user)
@@ -48,7 +48,7 @@ def main(old_user, old_pass, new_user, new_pass, debug):
         common.backup_files(filename)
         print("Backed up a previous copy of the new username's files.")
 
-    enc_key = bcrypt.hashpw(new_pass.encode(), bcrypt_salt)[-32:]
+    enc_key = bcrypt.hashpw(new_pass.encode(), config.bcrypt_salt)[-32:]
     succeeded = False
     try:
         new_filename = os.path.join(localdir, 'data', new_user)
@@ -62,6 +62,7 @@ def main(old_user, old_pass, new_user, new_pass, debug):
         print("Done. That took %1.2fs." % (time.time() - start_time))
     else:
         print("Failed.")
+
 
 if __name__=='__main__':
     parser = OptionParser()

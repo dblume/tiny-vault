@@ -1,8 +1,6 @@
-#!/home/dblume/opt/python-3.9.6/bin/python3
+#!/usr/bin/python3
 #
 # common.py by David Blume
-
-
 import os
 import sys
 import cgi
@@ -12,6 +10,7 @@ import filelock
 import shutil
 from itertools import cycle
 import base64
+import config
 
 def xor_crypt_string(data, key):
     #with open('dxb.txt', 'w') as f:
@@ -21,7 +20,7 @@ def xor_crypt_string(data, key):
 
 def salt():
     # Used only for cookies.
-    return 'qxNsyioe' + os.environ['REMOTE_ADDR']
+    return config.cookie_salt + os.environ['REMOTE_ADDR']
 
 
 def salt_cookie_data(data, salt):
@@ -35,11 +34,11 @@ def restore_from_salted_cookie(cookie, salt):
 
 def verify_user(localdir, username, password, session=""):
     message = ""
-    bcrypt_salt = '$2a$12$0S7xZwmn6w4xmuY1x5X26O' # Made by bcrypt.gensalt()
     if len(session):
         enc_key = session
     else:
-        enc_key = bcrypt.hashpw(password.encode(), bcrypt_salt.encode())[-32:]
+        enc_key = bcrypt.hashpw(password.encode(),
+                                config.bcrypt_salt.encode())[-32:]
     filename = os.path.join(localdir, 'data', username)
     try:
         with filelock.FileLock(filename) as lock:

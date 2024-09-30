@@ -1,9 +1,6 @@
-#!C:/Python26/python.exe
-#!/usr/bin/python -u
+#!/usr/bin/python3
 #
 # http://eli.thegreenplace.net/2010/06/25/aes-encryption-of-files-in-python-with-pycrypto/
-
-
 import string
 import os
 import sys
@@ -18,6 +15,7 @@ import csv
 import time
 import urllib.request, urllib.parse, urllib.error
 import base64
+import config
 
 class crypt_util_error(Exception): pass
 
@@ -153,8 +151,7 @@ if __name__=='__main__':
 
     rows = read_csv(os.path.join(localdir, 'splash_id_archive_CC_ID_fewer_columns.csv'))
 
-    bcrypt_salt = '$2a$12$0S7xZwmn6w4xmuY1x5X26O' # Made by bcrypt.gensalt()
-    enc_key = bcrypt.hashpw(b"passw0rd", bcrypt_salt.encode())[-32:]
+    enc_key = bcrypt.hashpw(b"passw0rd", config.bcrypt_salt.encode())[-32:]
     encrypt_rows(enc_key, rows, os.path.join(localdir, 'data', username))
 
     with filelock.FileLock(os.path.join(localdir, 'data', username)) as lock:
@@ -165,7 +162,7 @@ if __name__=='__main__':
 #    print my_hash
 
 
-#    hashed = bcrypt.hashpw( "password", bcrypt_salt )[-32:]
+#    hashed = bcrypt.hashpw( "password", config.bcrypt_salt )[-32:]
 
 
 #    session = base64.b64decode(urllib.unquote(cookie_val))

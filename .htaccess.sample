@@ -2,6 +2,9 @@ RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 DirectoryIndex index.php index.html index.py
+<FilesMatch "\.(py|html|txt)$">
+    Header set Cache-Control "no-store"
+</FilesMatch>
 AddCharset UTF-8 .txt
 ## Don't allow access to git directories
 <IfModule alias_module>
@@ -15,4 +18,5 @@ AddCharset UTF-8 .txt
     RedirectMatch 404 /new_password_and_user.py
     RedirectMatch 404 /smtp_creds.py
     RedirectMatch 404 /transactionlog.py
+    RedirectMatch 404 /config.py
 </IfModule>
