@@ -48,7 +48,6 @@ class Transaction_log(object):
             except filelock.FileLockException as e:
                 pass
 
-
     def allow(self, ip_addr, action):
         """ return whether or not the action should be allowed """
         if action == 'login':
@@ -65,7 +64,7 @@ class Transaction_log(object):
                         failed_logins_by_ip[log_ip].append(time.strptime(log_time_string, '%Y-%m-%d, %H:%M:%S'))
                         if consecutive_failed_login_counter_go:
                             consecutive_failed_login_count += 1
-                            oldest_consecutive_failed_login_time = log_time_string;
+                            oldest_consecutive_failed_login_time = log_time_string
                     else:
                         consecutive_failed_login_counter_go = False
 
@@ -83,7 +82,7 @@ class Transaction_log(object):
                     cur_time = time.strftime('%H:%M:%S, %Y-%m-%d', time.localtime())
                     try:
                         send_email(os.environ['SERVER_NAME'] + ' ' + action + ' disallowed',
-                                   'At ' + cur_time  + ' http://www.iplocation.net/index.php?query=' + ip_addr + \
+                                   'At ' + cur_time + ' http://www.iplocation.net/index.php?query=' + ip_addr + \
                                        '\r\nSee the logs at: https://' + os.environ['SERVER_NAME'] + '/log.txt\r\nAction attempted: ' + \
                                        action + '.\r\n',
                                        smtp_creds.default_recipients)
@@ -91,7 +90,6 @@ class Transaction_log(object):
                         print("Could not send email to notify you of the exception. :(")
                     return False
         return True
-
 
     def log(self, ip, action, detail):
         """ log attempt
@@ -112,12 +110,11 @@ class Transaction_log(object):
             pass
 
 
-if __name__=='__main__':
-    localdir = os.path.abspath( os.path.dirname(sys.argv[0]))
+if __name__ == '__main__':
+    localdir = os.path.abspath(os.path.dirname(sys.argv[0]))
     tlog = Transaction_log(os.path.join(localdir, 'test_log.txt'))
     print("tlog.allow", tlog.allow('10.100.12.131', 'login'))
     tlog.log('10.100.12.131', 'login', 'fail')
     tlog.log('10.100.12.131', 'login', 'fail')
     tlog.log('10.100.12.131', 'login', 'fail')
     print("Done.")
-

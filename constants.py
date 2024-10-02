@@ -55,12 +55,12 @@ login_form_text = """
 <form class="login" action="index.py" method="post" name="loginform" onSubmit="return validate(this);">
 <table cellspacing="0" cellpadding="1" border="0">
 <tr class="login" valign="top">
-	<td align="right" style="vertical-align:middle">Username:</td>
+    <td align="right" style="vertical-align:middle">Username:</td>
     <td align="left"><input class="login" type="text" size="14" maxlength="14" name="user" value="%s" autocapitalize="off"></td>
 </tr>
 <tr class="login">
-	<td align="right">Passphrase:</td><td><input class="login" type="password" autocomplete="off" size="24" maxlength="30" name="pass" value="">
-	<input class="login" type="submit" name="submit" value="login"></td>
+    <td align="right">Passphrase:</td><td><input class="login" type="password" autocomplete="off" size="24" maxlength="30" name="pass" value="">
+    <input class="login" type="submit" name="submit" value="login"></td>
 </tr>
 </table>
 </form>
@@ -69,14 +69,14 @@ login_form_text = """
 </div>"""
 
 
-type_map = { 'Bank Accts' : 'bank',
-             'Credit Cards' : 'cc',
-             'Email Accts' : 'email',
-             'Identification' : 'id',
-             'Insurance' : 'insur',
-             'Memberships' : 'membership',
-             'Vehicle Info' : 'vehicle',
-             'Web Logins' : 'web' }
+type_map = {'Bank Accts': 'bank',
+            'Credit Cards': 'cc',
+            'Email Accts': 'email',
+            'Identification': 'id',
+            'Insurance': 'insur',
+            'Memberships': 'membership',
+            'Vehicle Info': 'vehicle',
+            'Web Logins': 'web'}
 
 # ID, Type, Description, Username, Password, URL, Custom, Timestamp, Notes
 

@@ -13,13 +13,15 @@ import secrets
 import struct
 import csv
 import time
-import urllib.request, urllib.parse, urllib.error
 import base64
 import config
 
-class crypt_util_error(Exception): pass
 
-def encrypt_file(key, in_file, out_filename, chunksize=64*1024):
+class crypt_util_error(Exception):
+    pass
+
+
+def encrypt_file(key, in_file, out_filename, chunksize=64 * 1024):
     """ Encrypts a file using AES (CBC mode) with the
         given key.
 
@@ -61,7 +63,7 @@ def encrypt_file(key, in_file, out_filename, chunksize=64*1024):
             outfile.write(encryptor.encrypt(chunk))
 
 
-def decrypt_file(key, in_filename, out_file, chunksize=24*1024):
+def decrypt_file(key, in_filename, out_file, chunksize=24 * 1024):
     """ Decrypts a file using AES (CBC mode) with the
         given key. Parameters are similar to encrypt_file,
         with one difference: out_filename, if not supplied
@@ -121,7 +123,7 @@ def encrypt_rows(enc_key, rows, out_filename):
     hash = hashlib.md5(f.getvalue().encode('utf-8')).hexdigest()
     with open(out_filename + '.hash', 'wb') as h:
         h.write(hash.encode())
-    encrypt_file(enc_key, f, out_filename + '.enc', 16 * 1024 )
+    encrypt_file(enc_key, f, out_filename + '.enc', 16 * 1024)
     f.close()
 
 
@@ -143,7 +145,7 @@ def decrypt_rows(enc_key, in_filename):
     return True, rows
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     import filelock
     localdir = os.path.abspath(os.path.dirname(sys.argv[0]))
     username = 'test'

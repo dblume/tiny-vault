@@ -5,6 +5,7 @@
 
 A tiny website that attempts to securely store passwords.
 
+This was written in 2011, in Python 2. Releasing in 2024
 
 ## Getting Started
 
@@ -18,8 +19,19 @@ A tiny website that attempts to securely store passwords.
     cp smtp_creds.py.sample smtp_creds.py
     TODO: Edit smtp_creds.py
 
-TODO: Make the first account.
 
+## TODO
+
+- Make the first account.
+- Use python3 format prints.
+- Type hints
+- Add comments
+- PEP-8
+  -  python3 -m pip install pycodestyle
+  -  \#pycodestyle --first --ignore=E501 \*.py
+  -  \#pycodestyle --show-source --show-pep8 --ignore=E501 \*.py  \# --show-pep8 implies --first
+  -  pycodestyle --first --show-source --ignore=E501 \*.py
+- Maybe re-structure
 
 ## Is it ready for primetime?
 

@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-#
-# common.py by David Blume
 import os
 import sys
 import cgi
@@ -12,10 +10,9 @@ from itertools import cycle
 import base64
 import config
 
+
 def xor_crypt_string(data, key):
-    #with open('dxb.txt', 'w') as f:
-    #    f.write(f'DXB {type(data)=} {data=} {type(key)=} {key=}')
-    return ''.join(chr(ord(x) ^ ord(y)) for (x,y) in zip(data, cycle(key)))
+    return ''.join(chr(ord(x) ^ ord(y)) for (x, y) in zip(data, cycle(key)))
 
 
 def salt():
@@ -24,7 +21,6 @@ def salt():
 
 
 def salt_cookie_data(data, salt):
-    # print(f'DXB {data=}')
     return base64.b64encode(xor_crypt_string(data.decode(), salt).encode()).decode()
 
 
@@ -43,8 +39,6 @@ def verify_user(localdir, username, password, session=""):
     try:
         with filelock.FileLock(filename) as lock:
             succeeded, rows = crypt_utils.decrypt_rows(enc_key, filename)
-#            if succeeded == False:
-#                message = 'Unexpected: decrypt_rows failed. ' # + enc_key
     except filelock.FileLockException as e:
         succeeded = False
         rows = []
@@ -77,9 +71,7 @@ checkmark_char = '<span style="color: green; font-size: 20px">&#10003;</span>'
 error_char = '<span style="color: red; font-size: 32px">&#9888;</span>'
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     localdir = os.path.abspath(os.path.dirname(sys.argv[0]))
 
     print("Done.")
-
-

@@ -7,7 +7,8 @@ import sys
 import codecs
 import time
 import http.cookies
-import cgi, cgitb
+import cgi
+import cgitb
 import html
 import constants
 import string
@@ -19,11 +20,12 @@ import gen_password
 
 cgitb.enable(display=0, logdir="tmp")
 
+
 def print_edit_form(row):
-#   ID, Type, Description, Username, Password, URL, Custom, Timestamp, Notes
-#   (type) desc user sess url custom notes
+    # ID, Type, Description, Username, Password, URL, Custom, Timestamp, Notes
+    # (type) desc user sess url custom notes
     suggested_password = " (or change it to " + gen_password.password() + ")"
-    if int( row[0] ) == -1:
+    if int(row[0]) == -1:
         delete_button = ''
         last_edited = ''
     else:
@@ -36,9 +38,10 @@ def print_edit_form(row):
         selected = ""
         if row[1] == key:
             selected = " selected"
-        print('    <option%s value="%s">%s</option>' % ( selected, constants.type_map[key], key ))
+        print('    <option%s value="%s">%s</option>' % (selected, constants.type_map[key], key))
     print('</select><input type="hidden" name="id" value="%s">' % row[0])
     print(constants.edit_form_text_end % defaults)
+
 
 def get_cookie(my_cookie):
     have_cookie = False
@@ -71,6 +74,7 @@ def get_cookie(my_cookie):
         verify_msg = "No HTTP_COOKIE at all.<br />"
     return have_cookie, verified_session, username, session, rows, verify_msg
 
+
 def get_row_index(rows, id):
     found_row = False
     for i, row in enumerate(rows):
@@ -78,6 +82,7 @@ def get_row_index(rows, id):
             found_row = True
             break
     return found_row, i
+
 
 def delete_row(localdir, username, session, rows, id):
     succeeded = False
@@ -98,6 +103,7 @@ def delete_row(localdir, username, session, rows, id):
     except filelock.FileLockException as e:
         succeeded = False
     return succeeded
+
 
 def change_row(localdir, username, session, rows, row):
     succeeded = False
@@ -127,7 +133,7 @@ def get_new_id(rows):
     return str(last_max + 1)
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     localdir = os.path.abspath(os.path.dirname(sys.argv[0]))
     localdir_basename = os.path.basename(localdir)
 
@@ -170,7 +176,7 @@ if __name__=='__main__':
             url = ''
             custom = ''
             notes = ''
-            rev_type_map = dict((v,k) for k, v in constants.type_map.items())
+            rev_type_map = dict((v, k) for k, v in constants.type_map.items())
             type = rev_type_map[form_data['type'].value]
             if 'desc' in form_data:
                 desc = html.escape(form_data['desc'].value)
@@ -220,7 +226,7 @@ if __name__=='__main__':
                         break
         else:
             transaction_message = common.error_char + ' Could not verify your session. <a href="index.py?do=logout">Login again</a>, please.<br />'
-            transaction_message += verify_msg # delete this line
+            transaction_message += verify_msg  # delete this line
             tlog.log(os.environ['REMOTE_ADDR'], 'edit', 'verification failed')
             should_print_edit_form = False
 
@@ -252,13 +258,12 @@ if __name__=='__main__':
     if len(transaction_message):
         print(transaction_message)
 
-#    for k in sorted( form_data.keys() ):
-#        print "%s: %s<br />" % ( k, form_data[k] )
+#    for k in sorted(form_data.keys()):
+#        print "%s: %s<br />" % (k, form_data[k])
 
     if should_print_edit_form:
         print('<div style="position:absolute; top:30%; margin-top: -90px; left:50%; margin-left: -188px">')
-        print_edit_form( row )
+        print_edit_form(row)
         print('</div>')
 
     print(constants.html_footer_text)
-

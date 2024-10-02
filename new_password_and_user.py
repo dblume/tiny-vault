@@ -64,7 +64,7 @@ def main(old_user, old_pass, new_user, new_pass, debug):
         print("Failed.")
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("-d", "--debug", action="store_true", dest="debug")
     parser.add_option("-u", "--new_user", type="string", dest="new_user")
@@ -81,8 +81,3 @@ if __name__=='__main__':
         print("Error: You have to specify an existing database.")
         sys.exit(0)
     main(args[0], options.old_pass, options.new_user, options.new_pass, options.debug)
-
-
-
-
-

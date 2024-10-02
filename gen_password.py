@@ -15,6 +15,7 @@ digraphs = ['br', 'ch', 'ck', 'gh', 'ph', 'qu', 'sh', 'st',
 consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p',
               'r', 's', 't', 'v', 'w', 'x', 'y', 'z']
 
+
 def _vowel():
     return secrets.choice(vowels)
 
@@ -32,6 +33,7 @@ def _cvc():
 
 
 _syllables = [_vowel, _cv, _cvc]
+
 
 def _syllable():
     return secrets.choice(_syllables)()
@@ -53,7 +55,7 @@ def password():
 
     # More secure, but less readable
     alphabet = string.ascii_letters + string.digits + \
-               string.punctuation.translate(str.maketrans('', '', '\'"\\`'))
+        string.punctuation.translate(str.maketrans('', '', '\'"\\`'))
     while config.complex_password_alg:
         password = ''.join(secrets.choice(alphabet) for i in range(12))
         if (any(c.islower() for c in password)
@@ -101,7 +103,6 @@ def password():
     return "".join(syllables).replace('O', 'A').replace('I', 'Y')
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     for i in range(10):
         print(password())
-

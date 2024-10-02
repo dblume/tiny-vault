@@ -2,6 +2,7 @@
 import collections
 import random
 
+
 class DynamicDie(collections.defaultdict):
 
     def __init__(self):
@@ -31,8 +32,11 @@ class MarkovChain(collections.defaultdict):
 
     # Sentinals
     # Discussion here: http://stackoverflow.com/questions/1677726
-    class START(object):pass
-    class END(object):pass
+    class START(object):
+        pass
+
+    class END(object):
+        pass
 
     def __init__(self):
         collections.defaultdict.__init__(self, DynamicDie)
@@ -50,7 +54,7 @@ class MarkovChain(collections.defaultdict):
 
     def random_output(self, max=100):
         """ Generate a list of elements from the markov chain.
-            The `max` value is in place in order to prevent excessive iteration.
+            The `max` value is in place in order to prevent excessive iteration
         """
         output = []
         item1 = item2 = MarkovChain.START
@@ -62,6 +66,7 @@ class MarkovChain(collections.defaultdict):
             item1 = item2
             item2 = item3
         return output
+
 
 if __name__ == "__main__":
     chain = MarkovChain()

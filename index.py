@@ -7,7 +7,8 @@ import sys
 import codecs
 import time
 import http.cookies
-import cgi, cgitb
+import cgi
+import cgitb
 import constants
 import string
 from pathlib import Path
@@ -16,6 +17,7 @@ import transactionlog
 import logging
 
 cgitb.enable(display=0, logdir="tmp")
+
 
 def print_login_form(username):
     print(constants.login_form_text % username)
@@ -29,10 +31,10 @@ def user_text_is_valid(s):
     return True
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     logging.basicConfig(filename='index.py.log',
                         format='%(asctime)s %(levelname)s %(message)s',
-                        #datefmt='%Y-%m-%d %H:%M',
+                        # datefmt='%Y-%m-%d %H:%M',
                         level=logging.INFO)
     logger = logging.getLogger('index')
     logger.debug('Starting')
@@ -47,7 +49,7 @@ if __name__=='__main__':
     verify_msg = ''
     have_cookie = False
 
-    should_print_failed_login = False;
+    should_print_failed_login = False
     logger.debug('Before transaction log')
     tlog = transactionlog.Transaction_log(os.path.join(localdir, 'log.txt'), logger)
     logger.debug('Have transaction log')
@@ -70,12 +72,12 @@ if __name__=='__main__':
         else:
             # Sending a cookie.
             my_cookie['user'] = username
-            my_cookie['user']['max-age'] = 14*24*60*60
+            my_cookie['user']['max-age'] = 14 * 24 * 60 * 60
             my_cookie['user']['domain'] = '.' + localdir_basename
             my_cookie['user']['secure'] = 'on'
             my_cookie['user']['httponly'] = 'on'
             my_cookie['sess'] = common.salt_cookie_data(enc_key, common.salt())
-            my_cookie['sess']['max-age'] = 30*60
+            my_cookie['sess']['max-age'] = 30 * 60
             my_cookie['sess']['domain'] = '.' + localdir_basename
             my_cookie['sess']['secure'] = 'on'
             my_cookie['sess']['httponly'] = 'on'
@@ -130,7 +132,7 @@ if __name__=='__main__':
     if should_print_login_form:
         if not too_many_login_attempts:
             logger.debug('Printing login form')
-            #print '  <meta name="viewport" content="width=500, initial-scale=1.0"/> <!-- maximum-scale=1.0, user-scalable=0,"/>  -->'
+            # print '  <meta name="viewport" content="width=500, initial-scale=1.0"/> <!-- maximum-scale=1.0, user-scalable=0,"/>  -->'
             print('  <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=2.0, user-scalable=1"/>')
             print(constants.login_form_validator_text)
             if len(username):
@@ -186,5 +188,3 @@ if __name__=='__main__':
 
     print(constants.html_footer_text)
     logging.debug('Done. Printed footer.')
-
-
