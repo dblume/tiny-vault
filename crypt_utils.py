@@ -65,11 +65,7 @@ def encrypt_file(key, in_file, out_filename, chunksize=64 * 1024):
 
 def decrypt_file(key, in_filename, out_file, chunksize=24 * 1024):
     """ Decrypts a file using AES (CBC mode) with the
-        given key. Parameters are similar to encrypt_file,
-        with one difference: out_filename, if not supplied
-        will be in_filename without its last extension
-        (i.e. if in_filename is 'aaa.zip.enc' then
-        out_filename will be 'aaa.zip')
+        given key. Parameters are similar to encrypt_file.
     """
     if not os.path.exists(in_filename):
         return False
@@ -153,7 +149,7 @@ if __name__ == '__main__':
 
     rows = read_csv(os.path.join(localdir, 'splash_id_archive_CC_ID_fewer_columns.csv'))
 
-    enc_key = bcrypt.hashpw(b"passw0rd", config.bcrypt_salt.encode())[-32:]
+    enc_key = bcrypt.hashpw(b"passw0rd", config.bcrypt_salt)[-32:]
     encrypt_rows(enc_key, rows, os.path.join(localdir, 'data', username))
 
     with filelock.FileLock(os.path.join(localdir, 'data', username)) as lock:

@@ -165,23 +165,23 @@ if __name__ == '__main__':
             if should_print_failed_login:
                 print("<p><b>Sorry! That username or passphrase is incorrect.</b></p>")
                 if len(verify_msg):
-                    print("<p>%s</p>" % verify_msg)
+                    print(f"<p>{verify_msg}</p>")
             print_login_form(username)
             print('</div>')
         print(constants.credits_text)
     else:
-        print('<div style="text-align:right">%s <a href="index.py?do=logout">logout</a></div><br />' % username)
+        print(f'<div style="text-align:right">{username} <a href="index.py?do=logout">logout</a></div><br />')
 #        print '<div class="note"><strong>TIP:</strong> Sort multiple columns by holding down the <strong>shift</strong> key when clicking another header.</div><br />'
         print(constants.table_header)
         for id, type, desc, user, pwd, url, cust, ts, notes in rows:
             print("<tr>")
-            print("    <td><a href=\"edit.py?id=%d\">Edit</a></td>" % int(id))
-            print("    <td>%s</td>" % (type))
+            print(f"    <td><a href=\"edit.py?id={id}\">Edit</a></td>")
+            print(f"    <td>{type}</td>")
             if url.startswith('http'):
-                print("    <td><a href=\"%s\">%s</a></td>" % (url, desc))
+                print(f"    <td><a href=\"{url}\">{desc}</a></td>")
             else:
-                print("    <td>%s</td>" % (desc))
-            date = '<span style="color:lightgrey">%s</span>' % (time.strftime("%Y-%m-%d", time.localtime(float(ts))),)
+                print(f"    <td>{desc}</td>")
+            date = f'<span style="color:lightgrey">{time.strftime("%Y-%m-%d", time.localtime(float(ts)))}</span>'
             print("    <td>%s</td>\n    <td class=\"m\">%s</td>\n    <td>%s</td>\n    <td>%s %s</td>" % (user, pwd, cust, notes, date))
             print("</tr>")
         print(constants.table_footer)

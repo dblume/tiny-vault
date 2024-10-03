@@ -34,7 +34,7 @@ def verify_user(localdir, username, password, session=""):
         enc_key = session
     else:
         enc_key = bcrypt.hashpw(password.encode(),
-                                config.bcrypt_salt.encode())[-32:]
+                                config.bcrypt_salt)[-32:]
     filename = os.path.join(localdir, 'data', username)
     try:
         with filelock.FileLock(filename) as lock:

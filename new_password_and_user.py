@@ -1,6 +1,4 @@
 #!/home/dblume/opt/python-3.9.6/bin/python3
-# chmod 755 me, and make sure I have UNIX style newlines.
-# "-u" is for unbuffered binary output
 #
 # Example:
 #
@@ -18,7 +16,7 @@
 import os
 import sys
 import time
-from optparse import OptionParser
+from argparse import ArgumentParser
 import common
 import bcrypt
 import crypt_utils
@@ -26,18 +24,29 @@ import filelock
 import config
 
 
-def main(old_user, old_pass, new_user, new_pass, debug):
+def main(old_user: str, old_pass: str, new_user: str, new_pass: str):
     start_time = time.time()
     localdir = os.path.abspath(os.path.dirname(sys.argv[0]))
     succeeded = False
-    enc_key = bcrypt.hashpw(old_pass.encode(), config.bcrypt_salt)[-32:]
     rows = []
+    if not new_user:
+        new_user = old_user
+    if not new_pass:
+        new_pass = old_pass
     try:
         old_filename = os.path.join(localdir, 'data', old_user)
-        with filelock.FileLock(old_filename) as lock:
-            succeeded, rows = crypt_utils.decrypt_rows(enc_key, old_filename)
+        if os.path.exists(old_filename):
+            enc_key = bcrypt.hashpw(old_pass.encode(), config.bcrypt_salt)[-32:]
+            with filelock.FileLock(old_filename) as lock:
+                succeeded, rows = crypt_utils.decrypt_rows(enc_key, old_filename)
+        else:
+            succeeded = True
+            # ID, Type, Description, Username, Password, URL, Custom, Timestamp, Notes
+            rows = [['0', 'web', 'Example Site', 'username', 'correcthorsebatterystaple',
+                     'https://example.com', 'custom', str(time.time()), 'Change or delete this entry.']]
+            print(f"Creating a new database for {old_user}.")
     except filelock.FileLockException as e:
-        print("Failed to decrypt rows to new file. Exception:", e)
+        print(f"Failed to decrypt rows to new file. Exception: {e}")
 
     if not succeeded:
         print("Failed to read the old file. Bad passphrase or username?")
@@ -56,28 +65,20 @@ def main(old_user, old_pass, new_user, new_pass, debug):
             crypt_utils.encrypt_rows(enc_key, rows, new_filename)
             succeeded = True
     except filelock.FileLockException as e:
-        print("Failed to encrypt to new username. Exception:", e)
+        print(f"Failed to encrypt to new username. Exception: {e}")
 
     if succeeded:
-        print("Done. That took %1.2fs." % (time.time() - start_time))
+        print(f"Done. That took {(time.time() - start_time):1.2f}s.")
     else:
         print("Failed.")
 
 
 if __name__ == '__main__':
-    parser = OptionParser()
-    parser.add_option("-d", "--debug", action="store_true", dest="debug")
-    parser.add_option("-u", "--new_user", type="string", dest="new_user")
-    parser.add_option("-o", "--old_pass", type="string", dest="old_pass")
-    parser.add_option("-n", "--new_pass", type="string", dest="new_pass")
-    parser.set_defaults(debug=False,
-                        new_user="new_user",
-                        old_pass="passw0rd",
-                        new_pass="passw0rd")
-    options, args = parser.parse_args()
-    print("args", args)
-    print("options", options)
-    if len(args) != 1:
-        print("Error: You have to specify an existing database.")
-        sys.exit(0)
-    main(args[0], options.old_pass, options.new_user, options.new_pass, options.debug)
+    parser = ArgumentParser(description='Assign a new pasword or user.')
+    parser.add_argument("-u", "--new_user")
+    parser.add_argument("-n", "--new_pass")
+    parser.add_argument("old_user")
+    parser.add_argument("old_pass")
+    parser.set_defaults(new_user="", old_pass="")
+    args = parser.parse_args()
+    main(args.old_user, args.old_pass, args.new_user, args.new_pass)

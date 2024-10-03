@@ -30,7 +30,7 @@ def print_edit_form(row):
         last_edited = ''
     else:
         delete_button = ' &nbsp;<input type="submit" name="submit" onclick="document.pressed=this.value" value="Delete">'
-        last_edited = '<br /><span style="color:grey">Last edited on %s.</span>' % (time.strftime("%Y-%m-%d", time.localtime(float(row[7]))),)
+        last_edited = f'<br /><span style="color:grey">Last edited on {time.strftime("%Y-%m-%d", time.localtime(float(row[7])))}.</span>'
     defaults = (row[2], row[3], common.form_quote(row[4]), suggested_password, row[5], row[6], row[8], last_edited, delete_button)
     print(constants.edit_form_text_start)
     print('<select name="type">')
@@ -38,8 +38,8 @@ def print_edit_form(row):
         selected = ""
         if row[1] == key:
             selected = " selected"
-        print('    <option%s value="%s">%s</option>' % (selected, constants.type_map[key], key))
-    print('</select><input type="hidden" name="id" value="%s">' % row[0])
+        print(f'    <option{selected} value="{constants.type_map[key]}">{key}</option>')
+    print(f'</select><input type="hidden" name="id" value="{row[0]}">')
     print(constants.edit_form_text_end % defaults)
 
 
@@ -253,7 +253,7 @@ if __name__ == '__main__':
         print(special_message)
 
     # print '<a href="/index.py">Back to the list</a>.<div style="text-align:right">%s <a href="index.py?do=logout">logout</a></div><br />' % username
-    print('<div><span><a href="/index.py">Back to the list</a>.</span><div style="float: right; text-align:right">%s <a href="index.py?do=logout">logout</a></div></div><br />' % username)
+    print(f'<div><span><a href="/index.py">Back to the list</a>.</span><div style="float: right; text-align:right">{username} <a href="index.py?do=logout">logout</a></div></div><br />')
 
     if len(transaction_message):
         print(transaction_message)

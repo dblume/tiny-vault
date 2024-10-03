@@ -22,8 +22,6 @@ This was written in 2011, in Python 2. Releasing in 2024
 
 ## TODO
 
-- Make the first account.
-- Use python3 format prints.
 - Type hints
 - Add comments
 - PEP-8
