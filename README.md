@@ -9,15 +9,33 @@ This was written in 2011, in Python 2. Releasing in 2024
 
 ## Getting Started
 
+### Get the code:
+
     git clone https://github.com/dblume/tiny-vault.git
     cd tiny-vault
     python3 -m pip install -r requirements.txt
-    cp .htaccess.sample .htaccess
-    cp data/.htaccess.sample data/.htaccess
-    cp config.py.sample config.py
-    TODO: Edit config.py
-    cp smtp_creds.py.sample smtp_creds.py
-    TODO: Edit smtp_creds.py
+
+Move the sample config files to their production locations:
+
+    mv .htaccess.sample .htaccess
+    mv data/.htaccess.sample data/.htaccess
+    mv config.py.sample config.py
+
+Edit config.py. (Change the salts.)
+
+Not sure you really need to do this, but if you want email when there's trouble:
+
+    mv smtp_creds.py.sample smtp_creds.py
+
+And edit the smtp\_creds.py file.
+
+### Make an account
+
+To create the first account for <username>:
+
+    ./new_user_and_password.py <username>
+
+The script will ask you for the password you want to associate with that username.
 
 
 ## TODO
@@ -30,6 +48,7 @@ This was written in 2011, in Python 2. Releasing in 2024
   -  \#pycodestyle --show-source --show-pep8 --ignore=E501 \*.py  \# --show-pep8 implies --first
   -  pycodestyle --first --show-source --ignore=E501 \*.py
 - Maybe re-structure
+
 
 ## Is it ready for primetime?
 

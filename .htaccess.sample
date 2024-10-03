@@ -15,7 +15,7 @@ AddCharset UTF-8 .txt
     RedirectMatch 404 /constants.py
     RedirectMatch 404 /crypt_utils.py
     RedirectMatch 404 /decrypt.py
-    RedirectMatch 404 /new_password_and_user.py
+    RedirectMatch 404 /new_user_and_password.py
     RedirectMatch 404 /smtp_creds.py
     RedirectMatch 404 /transactionlog.py
     RedirectMatch 404 /config.py

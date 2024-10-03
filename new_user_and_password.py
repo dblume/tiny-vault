@@ -1,27 +1,14 @@
 #!/home/dblume/opt/python-3.9.6/bin/python3
-#
-# Example:
-#
-# Ensure you have "export HISTCONTROL=ignorespace" in your .bash_profile,
-# so that you can have your history ignore commands that start with a space.
-#
-# Then,
-#
-# To convert the existing database "test" to "aaron", you have to pass "test"
-# as an argument, and specify three options.
-#
-#  ./new_password_and_user.py --new_user=aaron --old_pass=passw0rd --new_pass=sdfkj23_ test
-#
-# ^ See that extra space at the beginning?  That's so the command won't go in the history.
 import os
 import sys
 import time
-from argparse import ArgumentParser
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import common
 import bcrypt
 import crypt_utils
 import filelock
 import config
+import getpass
 
 
 def main(old_user: str, old_pass: str, new_user: str, new_pass: str):
@@ -74,11 +61,35 @@ def main(old_user: str, old_pass: str, new_user: str, new_pass: str):
 
 
 if __name__ == '__main__':
-    parser = ArgumentParser(description='Assign a new pasword or user.')
+
+
+    desc = """Create a new account, or change username or password.
+
+Example:
+
+New account:
+------------
+
+To create a new account, myusername, run:
+
+    ./%(prog)s myusername
+
+Changing a username and password:
+---------------------------------
+
+To convert the existing database "olduser" to "aaron", you have to pass "olduser"
+as an argument, and specify two options.
+
+    ./%(prog)s -u aaron -p xvdfkj23_ olduser
+"""
+
+
+    parser = ArgumentParser(description=desc,
+        formatter_class=RawDescriptionHelpFormatter)
     parser.add_argument("-u", "--new_user")
-    parser.add_argument("-n", "--new_pass")
+    parser.add_argument("-p", "--new_pass")
     parser.add_argument("old_user")
-    parser.add_argument("old_pass")
-    parser.set_defaults(new_user="", old_pass="")
+    parser.set_defaults(new_user="", new_pass="")
     args = parser.parse_args()
-    main(args.old_user, args.old_pass, args.new_user, args.new_pass)
+    old_pass = getpass.getpass(f'Password for {args.old_user}:')
+    main(args.old_user, old_pass, args.new_user, args.new_pass)
