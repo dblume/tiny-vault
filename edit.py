@@ -17,11 +17,12 @@ import crypt_utils
 import filelock
 import transactionlog
 import gen_password
+from typing import Sequence
 
 cgitb.enable(display=0, logdir="tmp")
 
 
-def print_edit_form(row):
+def print_edit_form(row: Sequence[str]) -> None:
     # ID, Type, Description, Username, Password, URL, Custom, Timestamp, Notes
     # (type) desc user sess url custom notes
     suggested_password = " (or change it to " + gen_password.password() + ")"
@@ -43,7 +44,7 @@ def print_edit_form(row):
     print(constants.edit_form_text_end % defaults)
 
 
-def get_cookie(my_cookie):
+def get_cookie(my_cookie: dict[str, str]) -> tuple[bool, bool, str, str, Sequence[str], str]:
     have_cookie = False
     username = ''
     session = ''
@@ -75,7 +76,7 @@ def get_cookie(my_cookie):
     return have_cookie, verified_session, username, session, rows, verify_msg
 
 
-def get_row_index(rows, id):
+def get_row_index(rows, id: str) -> tuple[bool, int]:
     found_row = False
     for i, row in enumerate(rows):
         if int(id) == int(row[0]):
@@ -84,7 +85,8 @@ def get_row_index(rows, id):
     return found_row, i
 
 
-def delete_row(localdir, username, session, rows, id):
+def delete_row(localdir: str, username: str, session: str,
+               rows: Sequence[Sequence[str]], id: str) -> bool:
     succeeded = False
 
     found_row, index = get_row_index(rows, id)
@@ -105,7 +107,9 @@ def delete_row(localdir, username, session, rows, id):
     return succeeded
 
 
-def change_row(localdir, username, session, rows, row):
+def change_row(localdir: str, username: str, session: str,
+        rows: Sequence[Sequence[str]], row: Sequence[str]) -> bool:
+    """Appends the new row to, or edits the row in place in rows."""
     succeeded = False
 
     found_row, index = get_row_index(rows, row[0])
@@ -125,7 +129,8 @@ def change_row(localdir, username, session, rows, row):
     return succeeded
 
 
-def get_new_id(rows):
+def get_new_id(rows: Sequence[Sequence[str]]) -> str:
+    """Returns a new ID not in the list of rows"""
     last_max = 0
     for r in rows:
         if int(r[0]) > last_max:
@@ -230,8 +235,6 @@ if __name__ == '__main__':
             tlog.log(os.environ['REMOTE_ADDR'], 'edit', 'verification failed')
             should_print_edit_form = False
 
-#    if have_cookie:
-#        print my_cookie
     print("Content-type: text/html; charset=utf-8\n\n")
 
     print(constants.html_head_text % (os.environ['SERVER_NAME'], os.environ['SERVER_NAME']))
@@ -252,7 +255,6 @@ if __name__ == '__main__':
     if len(special_message):
         print(special_message)
 
-    # print '<a href="/index.py">Back to the list</a>.<div style="text-align:right">%s <a href="index.py?do=logout">logout</a></div><br />' % username
     print(f'<div><span><a href="/index.py">Back to the list</a>.</span><div style="float: right; text-align:right">{username} <a href="index.py?do=logout">logout</a></div></div><br />')
 
     if len(transaction_message):

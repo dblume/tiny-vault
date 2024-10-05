@@ -9,26 +9,28 @@ import shutil
 from itertools import cycle
 import base64
 import config
+from typing import Sequence
 
 
-def xor_crypt_string(data, key):
+def xor_crypt_string(data: str, key: str) -> str:
     return ''.join(chr(ord(x) ^ ord(y)) for (x, y) in zip(data, cycle(key)))
 
 
-def salt():
+def salt() -> str:
     # Used only for cookies.
     return config.cookie_salt + os.environ['REMOTE_ADDR']
 
 
-def salt_cookie_data(data, salt):
+def salt_cookie_data(data: str, salt: str) -> str:
     return base64.b64encode(xor_crypt_string(data.decode(), salt).encode()).decode()
 
 
-def restore_from_salted_cookie(cookie, salt):
+def restore_from_salted_cookie(cookie: str, salt: str) -> str:
     return xor_crypt_string(base64.b64decode(cookie).decode(), salt)
 
 
-def verify_user(localdir, username, password, session=""):
+def verify_user(localdir: str, username: str, password: str, session: str=""
+        ) -> tuple[bool, str, Sequence[Sequence[str]], str]:
     message = ""
     if len(session):
         enc_key = session
@@ -50,7 +52,7 @@ def verify_user(localdir, username, password, session=""):
     return succeeded, enc_key, rows, message
 
 
-def backup_files(filename):
+def backup_files(filename: str) -> None:
     prev_enc = filename + ".enc_prev"
     prev_hash = filename + ".hash_prev"
     if os.path.exists(prev_enc):
@@ -61,7 +63,7 @@ def backup_files(filename):
     shutil.copyfile(filename + ".hash", prev_hash)
 
 
-def form_quote(t):
+def form_quote(t: str) -> str:
     """HTML-escape for form input the text in `t`."""
     return (t.replace('"', "&quot;"))
 

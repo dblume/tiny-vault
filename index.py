@@ -19,11 +19,11 @@ import logging
 cgitb.enable(display=0, logdir="tmp")
 
 
-def print_login_form(username):
+def print_login_form(username: str) -> None:
     print(constants.login_form_text % username)
 
 
-def user_text_is_valid(s):
+def user_text_is_valid(s: str) -> bool:
     allowed_letters = string.ascii_letters + string.digits + '_'
     for c in s:
         if c not in allowed_letters:

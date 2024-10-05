@@ -15,13 +15,14 @@ import csv
 import time
 import base64
 import config
+from typing import BinaryIO, Sequence
 
 
 class crypt_util_error(Exception):
     pass
 
 
-def encrypt_file(key, in_file, out_filename, chunksize=64 * 1024):
+def encrypt_file(key: str, in_file: BinaryIO, out_filename: str, chunksize: int=64 * 1024) -> None:
     """ Encrypts a file using AES (CBC mode) with the
         given key.
 
@@ -63,7 +64,7 @@ def encrypt_file(key, in_file, out_filename, chunksize=64 * 1024):
             outfile.write(encryptor.encrypt(chunk))
 
 
-def decrypt_file(key, in_filename, out_file, chunksize=24 * 1024):
+def decrypt_file(key: str, in_filename: str, out_file: BinaryIO, chunksize: int=24 * 1024) -> bool:
     """ Decrypts a file using AES (CBC mode) with the
         given key. Parameters are similar to encrypt_file.
     """
@@ -83,14 +84,14 @@ def decrypt_file(key, in_filename, out_file, chunksize=24 * 1024):
     return True
 
 
-def read_csv(filename):
+def read_csv(filename: str) -> Sequence[Sequence[str]]:
     rows = []
     with open(filename, 'rb') as f:
         rows = convert_csv_rows(f)
     return rows
 
 
-def convert_csv_rows(f):
+def convert_csv_rows(f: BinaryIO) -> Sequence[Sequence[str]]:
     rows = []
     reader = csv.reader(f)
     # Read in:
@@ -112,7 +113,7 @@ def convert_csv_rows(f):
     return rows
 
 
-def encrypt_rows(enc_key, rows, out_filename):
+def encrypt_rows(enc_key: str, rows: Sequence[Sequence[str]], out_filename: str) -> None:
     f = io.StringIO()
     writer = csv.writer(f)
     writer.writerows(rows)
@@ -123,7 +124,7 @@ def encrypt_rows(enc_key, rows, out_filename):
     f.close()
 
 
-def decrypt_rows(enc_key, in_filename):
+def decrypt_rows(enc_key: str, in_filename: str) -> tuple[bool, Sequence[Sequence[str]]]:
     """ returns True, rows upon success """
     rows = []
     f = io.StringIO()

@@ -40,14 +40,8 @@ The script will ask you for the password you want to associate with that usernam
 
 ## TODO
 
-- Type hints
-- Add comments
-- PEP-8
-  -  python3 -m pip install pycodestyle
-  -  \#pycodestyle --first --ignore=E501 \*.py
-  -  \#pycodestyle --show-source --show-pep8 --ignore=E501 \*.py  \# --show-pep8 implies --first
-  -  pycodestyle --first --show-source --ignore=E501 \*.py
 - Maybe re-structure
+- Fix README.md
 
 
 ## Is it ready for primetime?

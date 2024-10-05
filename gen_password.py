@@ -16,30 +16,30 @@ consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p',
               'r', 's', 't', 'v', 'w', 'x', 'y', 'z']
 
 
-def _vowel():
+def _vowel() -> str:
     return secrets.choice(vowels)
 
 
-def _consonant():
+def _consonant() -> str:
     return secrets.choice(consonants + digraphs)
 
 
-def _cv():
+def _cv() -> str:
     return _consonant() + _vowel()
 
 
-def _cvc():
+def _cvc() -> str:
     return _cv() + _consonant()
 
 
 _syllables = [_vowel, _cv, _cvc]
 
 
-def _syllable():
+def _syllable() -> str:
     return secrets.choice(_syllables)()
 
 
-def _syllable_of_type(index, last_chars):
+def _syllable_of_type(index: int, last_chars: str) -> str:
     if last_chars in digraphs:
         new_syllable = _syllables[index]()
         while new_syllable[:2] == last_chars:
@@ -49,7 +49,7 @@ def _syllable_of_type(index, last_chars):
         return _syllables[index]()
 
 
-def password():
+def password() -> str:
     """ Returns a somewhat random password, depending on the algorithm you choose.
     """
 
@@ -59,9 +59,9 @@ def password():
     while config.complex_password_alg:
         password = ''.join(secrets.choice(alphabet) for i in range(12))
         if (any(c.islower() for c in password)
-               and any(c.isupper() for c in password)
-               and any(c in string.punctuation for c in password)
-               and any(c.isdigit() for c in password)):
+                and any(c.isupper() for c in password)
+                and any(c in string.punctuation for c in password)
+                and any(c.isdigit() for c in password)):
             return password
 
     # More readable and "word selectable"

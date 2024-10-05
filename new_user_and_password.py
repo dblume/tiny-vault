@@ -11,7 +11,7 @@ import config
 import getpass
 
 
-def main(old_user: str, old_pass: str, new_user: str, new_pass: str):
+def main(old_user: str, old_pass: str, new_user: str, new_pass: str) -> None:
     start_time = time.time()
     localdir = os.path.abspath(os.path.dirname(sys.argv[0]))
     succeeded = False
@@ -61,8 +61,6 @@ def main(old_user: str, old_pass: str, new_user: str, new_pass: str):
 
 
 if __name__ == '__main__':
-
-
     desc = """Create a new account, or change username or password.
 
 Example:
@@ -82,7 +80,6 @@ as an argument, and specify two options.
 
     ./%(prog)s -u aaron -p xvdfkj23_ olduser
 """
-
 
     parser = ArgumentParser(description=desc,
         formatter_class=RawDescriptionHelpFormatter)

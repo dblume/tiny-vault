@@ -8,10 +8,12 @@ import smtplib
 from collections import defaultdict
 import smtp_creds
 import config
+from typing import Sequence
 
 
-def send_email(subject, message, toaddrs,
-        fromaddr='"%s %s" <%s>' % (os.environ['SERVER_NAME'], os.path.basename(__file__), smtp_creds.user)):
+def send_email(subject: str, message: str, toaddrs: Sequence[str],
+        fromaddr='"%s %s" <%s>' % (os.environ['SERVER_NAME'], os.path.basename(__file__), smtp_creds.user)
+        ) -> None:
     """ Sends Email """
     smtp = smtplib.SMTP(smtp_creds.server, port=smtp_creds.port)
     smtp.login(smtp_creds.user, smtp_creds.passw)
@@ -21,7 +23,7 @@ def send_email(subject, message, toaddrs,
     smtp.quit()
 
 
-def Map_ip(ip):
+def Map_ip(ip: str) -> str:
     """Emits nicknames for certain IP addresses."""
     if ip in config.ip_to_nickname:
         ip = config.ip_to_nickname[ip]
@@ -30,7 +32,7 @@ def Map_ip(ip):
 
 class Transaction_log(object):
     """ An object to query th existing log and to add new logs. """
-    def __init__(self, filename, pylog=None):
+    def __init__(self, filename: str, pylog=None) -> None:
         """ Prepare the Transaction log """
         self.filename = filename
         self.logs = []
@@ -48,7 +50,7 @@ class Transaction_log(object):
             except filelock.FileLockException as e:
                 pass
 
-    def allow(self, ip_addr, action):
+    def allow(self, ip_addr: str, action: str) -> bool:
         """ return whether or not the action should be allowed """
         if action == 'login':
             ip = Map_ip(ip_addr)
@@ -91,7 +93,7 @@ class Transaction_log(object):
                     return False
         return True
 
-    def log(self, ip, action, detail):
+    def log(self, ip: str, action: str, detail: str) -> None:
         """ log attempt
             action can be: "login", "logout", "edit", "delete", """
         # Just keep the last 200 or so

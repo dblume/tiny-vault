@@ -58,7 +58,7 @@ class MarkovChain(collections.defaultdict):
         """
         output = []
         item1 = item2 = MarkovChain.START
-        for i in range(max-2):
+        for i in range(max - 2):
             item3 = self[(item1, item2)].roll()
             if item3 is MarkovChain.END:
                 break
