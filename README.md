@@ -28,7 +28,7 @@ No frameworks. Everything else is just support for the above.
 Tiny Vault relies on running behind TLS (HTTPS). And it relies on you creating
 a secure master password for yourself.
 
-It does not store passwords or hashes of passwords. It only store encrypted
+It does not store passwords or hashes of passwords. It only stores encrypted
 vault files.
 
 ![tiny-vault-security.png](https://raw.githubusercontent.com/dblume/tiny-vault/main/images/tiny-vault-security.png)
