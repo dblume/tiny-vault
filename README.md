@@ -3,11 +3,32 @@
 
 ## Tiny Vault
 
-A tiny website that attempts to securely store passwords.
+A tiny website that attempts to securely store passwords. It was written in 
+2011, in Python 2. Releasing in 2024 in Python 3.
 
-This was written in 2011, in Python 2. Releasing in 2024
+## How Tiny Is It?
+
+The heart of the site boils down to just two files.
+
+- index.py
+  - Shows a sign-in screen if you haven't signed in yet.
+  - Shows a filtered table of your data if you have signed in.
+- edit.py
+  - Shows an edit form for one of the rows in the table.
+
+Everything else is just support for the above.
+
+![tiny-vault-flow.png](https://raw.githubusercontent.com/dblume/tiny-vault/main/images/tiny-vault-flow.png)
 
 ## Getting Started
+
+### Requirements
+
+It was only written to run in Apache. The .htaccess files are important.
+If you want to migrate to another server, please specify the same rules on that server.
+
+- Apache
+- TLS (Consider [Let's Encrypt](https://letsencrypt.org/) for your certificates.)
 
 ### Get the code:
 
@@ -36,6 +57,7 @@ To create the first account for <username>:
     ./new_user_and_password.py <username>
 
 The script will ask you for the password you want to associate with that username.
+
 
 
 ## TODO
