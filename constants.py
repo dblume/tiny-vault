@@ -48,7 +48,7 @@ function validate() {
 html_body_prefix_text = """"""
 
 login_form_text = """
-<!-- <img alt="lock" height="107" src="background_lock_gray.png" width="77" style="float:left; position: relative"> -->
+<!-- <img alt="lock" height="107" src="images/background_lock_gray.png" width="77" style="float:left; position: relative"> -->
 <div class="login">
 <!-- <div class="bolt" style="float:left; position: relative; margin: 6px 0px 0px 6px;"></div> -->
 <!-- <div class="bolt" style="float:right; position: relative; margin: 6px 6px 0px 0px;"></div> -->
