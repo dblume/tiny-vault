@@ -1,7 +1,4 @@
 #!/home/dblume/opt/python-3.9.6/bin/python3
-# Also restore my_cookie['user']['domain']
-# index.py by David Blume
-
 import os
 import sys
 import codecs
@@ -15,6 +12,11 @@ from pathlib import Path
 import common
 import transactionlog
 import logging
+
+__author__ = 'David Blume'
+__copyright__ = "Copyright 2011, David Blume"
+__license__ = "Apache 2.0"
+__version__ = "1.0"
 
 cgitb.enable(display=0, logdir="tmp")
 
