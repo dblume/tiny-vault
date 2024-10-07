@@ -68,7 +68,7 @@ And edit the smtp\_creds.py file.
 
 ### Make an account
 
-To create the first account for <username>:
+To create the first account for \<username>:
 
     ./new_user_and_password.py <username>
 
