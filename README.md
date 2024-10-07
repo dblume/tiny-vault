@@ -8,7 +8,7 @@ It was written in 2011, in Python 2. Releasing in 2024 in Python 3, but it retai
 its web-1.0 spirit.
 
 
-## How Tiny Is It?
+## How tiny is it?
 
 The heart of the site boils down to just two files.
 
@@ -93,7 +93,30 @@ The script will ask you for the password you want to associate with that usernam
 
 ## Is it ready for primetime?
 
-No.
+Probably not. Help make it better by being the first to collect the $1337 
+vulnerability bounty.
+
+
+## The $1337 what?
+
+If you find a vulnerability in the code, and it grants you access to the vault
+at [tiny-vault](https://tiny-vault.betterfool.com/) even though I didn't give
+you credentials, that's possibly worth a bounty to me.
+
+To apply for the bounty, follow the instructions hidden in the vault at
+[tiny-vault](https://tiny-vault.betterfool.com/). The fact that I haven't
+given you the account (yet) or password (never will) is intentional.
+
+Please don't DDoS the site with brute force attempts. It can't handle it, and
+[the site shuts down](https://github.com/dblume/tiny-vault/blob/main/transactionlog.py#L83)
+and I don't use master passwords vulnerable to social attacks or lists like
+rockyou.txt. I am not the path to the bounty, a vulnerability in the code is.
+
+I won't reward the bounty to vulnerability reports that weren't issued per the
+hidden instructions in the vault.
+
+This offer is non-binding and at my sole discretion. If it causes any trouble
+it goes away.
 
 
 ## Is it any good?
