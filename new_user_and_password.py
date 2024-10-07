@@ -29,7 +29,7 @@ def main(old_user: str, old_pass: str, new_user: str, new_pass: str) -> None:
         else:
             succeeded = True
             # ID, Type, Description, Username, Password, URL, Custom, Timestamp, Notes
-            rows = [['0', 'web', 'Example Site', 'username', 'correcthorsebatterystaple',
+            rows = [['0', 'Web Logins', 'Example Site', 'username', 'correcthorsebatterystaple',
                      'https://example.com', 'custom', str(time.time()), 'Change or delete this entry.']]
             print(f"Creating a new database for {old_user}.")
     except filelock.FileLockException as e:
