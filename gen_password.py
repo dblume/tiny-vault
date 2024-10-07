@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-#
 # http://www.evanfosmark.com/2009/07/creating-fake-words/
-
 import string
 import secrets
 from collections import defaultdict
