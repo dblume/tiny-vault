@@ -23,6 +23,20 @@ No frameworks. Everything else is just support for the above.
 ![tiny-vault-flow.png](https://raw.githubusercontent.com/dblume/tiny-vault/main/images/tiny-vault-flow.png)
 
 
+## What makes this vault great?
+
+The most common usecase, getting a password, has a quick and easy flow. Ex.,
+
+1. Enter your master password if you're not already signed in.
+2. The filter list is displayed with focus on filter edit box. Type "sof" and
+   the filter will interactively hide everything that doesn't match, eventually
+   leaving nothing but your "SoFi Bank" entry.
+3. Just select the password, and it's auto-copied to your clipboard. (Depending
+   on browser support.)
+
+You didn't have to scroll, select edit boxes, move a cursor much, type much or
+use shortcut key combos. It's fast and efficient.
+
 ## What about the security and encryption?
 
 Tiny Vault relies on running behind TLS (HTTPS). And it relies on you creating
