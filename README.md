@@ -33,6 +33,8 @@ vault files.
 
 ![tiny-vault-security.png](https://raw.githubusercontent.com/dblume/tiny-vault/main/images/tiny-vault-security.png)
 
+The above diagrams were made with [Excalidraw](https://excalidraw.com/).
+
 
 ## Getting Started
 
