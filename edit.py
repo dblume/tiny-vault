@@ -242,7 +242,7 @@ if __name__ == '__main__':
 
     print(constants.html_head_text % (os.environ['SERVER_NAME'], os.environ['SERVER_NAME']))
     if should_print_edit_form:
-        print('  <meta name="viewport" content="width=400, initial-scale=1.0"/> <!-- maximum-scale=1.0; user-scalable=0;"/>  -->')
+        print('  <meta name="viewport" content="width=400, initial-scale=1.0"> <!-- maximum-scale=1.0; user-scalable=0;"/>  -->')
         print(constants.edit_form_validator_text)
         default_focus_text = ' OnLoad="document.editform.desc.focus();"'
     else:

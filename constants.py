@@ -1,8 +1,8 @@
 html_head_text = """<!DOCTYPE html>
-<html><head>
+<html lang="en"><head>
   <meta charset="UTF-8">
   <title>%s</title>
-  <link rel="shortcut icon" href="https://%s/favicon.ico" />
+  <link rel="shortcut icon" href="https://%s/favicon.ico">
   <link rel="stylesheet" type="text/css" media="screen" href="style.css">"""
 
 html_head_table_style = '<link rel="stylesheet" href="tablesorter.css" type="text/css" media="print, projection, screen" />'
@@ -48,12 +48,9 @@ function validate() {
 html_body_prefix_text = """"""
 
 login_form_text = """
-<!-- <img alt="lock" height="107" src="images/background_lock_gray.png" width="77" style="float:left; position: relative"> -->
 <div class="login">
-<!-- <div class="bolt" style="float:left; position: relative; margin: 6px 0px 0px 6px;"></div> -->
-<!-- <div class="bolt" style="float:right; position: relative; margin: 6px 6px 0px 0px;"></div> -->
 <form class="login" action="index.py" method="post" name="loginform" onSubmit="return validate(this);">
-<table cellspacing="0" cellpadding="1" border="0">
+<table style="border-spacing:0; padding:1px; border: none;">
 <tr class="login" valign="top">
     <td align="right" style="vertical-align:middle">Username:</td>
     <td align="left"><input class="login" type="text" size="14" maxlength="14" name="user" value="%s" autocapitalize="off"></td>
@@ -64,8 +61,6 @@ login_form_text = """
 </tr>
 </table>
 </form>
-<!-- <div class="bolt" style="float:left; position: relative; margin 6px 0px 0px 0px"></div> -->
-<!-- <div class="bolt" style="float:right; position: relative; margin: 0px 6px 6px 0px;"></div> -->
 </div>"""
 
 
@@ -81,7 +76,7 @@ type_map = {'Bank Accts': 'bank',
 # ID, Type, Description, Username, Password, URL, Custom, Timestamp, Notes
 
 edit_form_text_start = """<form action="edit.py" method="post" name="editform" onSubmit="return validate(this);">
-<table cellspacing="0" cellpadding="1" border="0">
+<table style="border-spacing:0; padding:1px; border: none;">
 <tr valign="top">
     <td align="right">Type:</td>
     <td>"""
@@ -149,7 +144,7 @@ $(document).ready(function(){
 table_header = """<div class="sans"><form id="filter-form" name="filterform">Filter: <input name="filter" id="filter" value="" maxlength="30" size="30" type="text" autocapitalize="off">
 &nbsp;&nbsp;| &nbsp;<a href="edit.py?id=new">Create a new row</a>.&nbsp;
 | &nbsp;<span style="color:#00827F;"><span style="color:white; background-color:#00827F;"> ℹ </span> &nbsp;Selected text gets automatically copied to the clipboard.</span></div></form>
-<table cellspacing="1" id="myTable" class="tablesorter">
+<table style="border-spacing:1px; padding:0px;" id="myTable" class="tablesorter">
 <thead>
 <tr>
     <th>Action</th>
@@ -166,7 +161,7 @@ table_header = """<div class="sans"><form id="filter-form" name="filterform">Fil
 table_footer = "</tbody>\n</table>"
 
 credits_text = """<div class="credits"><a href="https://david.dlma.com/blog/internet-security">About this site</a>.
-<a href="https://medium.com/@dblume/thats-not-my-cookie-98aa23088b78">"That's not my cookie"</a> is a tale of a bugfix.<br />
+<a href="https://medium.com/@dblume/thats-not-my-cookie-98aa23088b78">"That's not my cookie"</a> is a tale of a bugfix.<br>
 Thanks to <a href="http://jquery.com/">jQuery</a>,
 Christian Bach's <a href="http://tablesorter.com/docs/">tablesorter</a>,
 Greg Weber's <a href="http://gregweber.info/projects/uitablefilter">uitablefilter</a>,
