@@ -51,12 +51,12 @@ login_form_text = """
 <div class="login">
 <form class="login" action="index.py" method="post" name="loginform" onSubmit="return validate(this);">
 <table style="border-spacing:0; padding:1px; border: none;">
-<tr class="login" valign="top">
-    <td align="right" style="vertical-align:middle">Username:</td>
-    <td align="left"><input class="login" type="text" size="14" maxlength="14" name="user" value="%s" autocapitalize="off"></td>
+<tr class="login">
+    <td style="text-align:right; vertical-align:middle">Username:</td>
+    <td><input class="login" type="text" size="14" maxlength="14" name="user" value="%s" autocapitalize="off"></td>
 </tr>
 <tr class="login">
-    <td align="right">Passphrase:</td><td><input class="login" type="password" autocomplete="off" size="24" maxlength="30" name="pass" value="">
+    <td style="text-align:right;">Passphrase:</td><td><input class="login" type="password" autocomplete="off" size="24" maxlength="30" name="pass" value="">
     <input class="login" type="submit" name="submit" value="login"></td>
 </tr>
 </table>
@@ -77,8 +77,8 @@ type_map = {'Bank Accts': 'bank',
 
 edit_form_text_start = """<form action="edit.py" method="post" name="editform" onSubmit="return validate(this);">
 <table style="border-spacing:0; padding:1px; border: none;">
-<tr valign="top">
-    <td align="right">Type:</td>
+<tr style="vertical-align:top;">
+    <td style="text-align:right;">Type:</td>
     <td>"""
 # <select name="type">
 #     <option value="bank">Bank Accts</option>
@@ -92,26 +92,26 @@ edit_form_text_start = """<form action="edit.py" method="post" name="editform" o
 # </select>
 edit_form_text_end = """</td>
 </tr>
-<tr valign="top">
-    <td align="right">Description:</td><td><input type="text" size="30" maxlength="40" name="desc" value="%s" autocapitalize="off"></td>
+<tr style="vertical-align:top;">
+    <td style="text-align:right;">Description:</td><td><input type="text" size="30" maxlength="40" name="desc" value="%s" autocapitalize="off"></td>
 </tr>
-<tr valign="top">
-    <td align="right">Name:</td><td><input type="text" size="30" maxlength="40" name="user" value="%s" autocapitalize="off"></td>
+<tr style="vertical-align:top;">
+    <td style="text-align:right;">Name:</td><td><input type="text" size="30" maxlength="40" name="user" value="%s" autocapitalize="off"></td>
 </tr>
-<tr valign="top">
-    <td align="right">Password:</td><td><input type="text" size="30" maxlength="40" name="sess" value="%s" autocapitalize="off">%s</td>
+<tr style="vertical-align:top;">
+    <td style="text-align:right;">Password:</td><td><input type="text" size="30" maxlength="40" name="sess" value="%s" autocapitalize="off">%s</td>
 </tr>
-<tr valign="top">
-    <td align="right">URL:</td><td><input type="text" size="60" maxlength="800" name="url" value="%s" autocapitalize="off"></td>
+<tr style="vertical-align:top;">
+    <td style="text-align:right;">URL:</td><td><input type="text" size="60" maxlength="800" name="url" value="%s" autocapitalize="off"></td>
 </tr>
-<tr valign="top">
-    <td align="right">Custom:</td><td><input type="text" size="60" maxlength="200" name="custom" value="%s" autocapitalize="off"></td>
+<tr style="vertical-align:top;">
+    <td style="text-align:right;">Custom:</td><td><input type="text" size="60" maxlength="200" name="custom" value="%s" autocapitalize="off"></td>
 </tr>
-<tr valign="top">
-    <td align="right">Notes:</td><td><textarea rows="4" cols="40" maxlength="800" title="notes" name="notes">%s</textarea>%s</td>
+<tr style="vertical-align:top;">
+    <td style="text-align:right;">Notes:</td><td><textarea rows="4" cols="40" maxlength="800" title="notes" name="notes">%s</textarea>%s</td>
 </tr>
-<tr valign="top">
-    <td colspan="2" align="right"><input type="submit" name="submit" onclick="document.pressed=this.value" value="OK"> <input type="submit" name="submit" onclick="document.pressed=this.value" value="Cancel">%s</td>
+<tr>
+    <td colspan="2" style="text-align:right;"><input type="submit" name="submit" onclick="document.pressed=this.value" value="OK"> <input type="submit" name="submit" onclick="document.pressed=this.value" value="Cancel">%s</td>
 </tr>
 </table>
 </form>"""
