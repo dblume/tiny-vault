@@ -134,8 +134,7 @@ if __name__ == '__main__':
     if should_print_login_form:
         if not too_many_login_attempts:
             logger.debug('Printing login form')
-            # print '  <meta name="viewport" content="width=500, initial-scale=1.0"/> <!-- maximum-scale=1.0, user-scalable=0,"/>  -->'
-            print('  <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=2.0, user-scalable=1"/>')
+            print('  <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=2.0, user-scalable=1">')
             print(constants.login_form_validator_text)
             if len(username):
                 default_focus_text = ' OnLoad="document.loginform.pass.focus();"'
@@ -145,7 +144,7 @@ if __name__ == '__main__':
             default_focus_text = ''
             print('<strong>Too many failed login attempts.</strong>')
     else:
-        print('  <meta name="viewport" content="width=500, initial-scale=1.0"/> <!-- maximum-scale=1.0, user-scalable=0,"/>  -->')
+        print('  <meta name="viewport" content="width=500, initial-scale=1.0"> <!-- maximum-scale=1.0, user-scalable=0,"/>  -->')
         print(constants.html_head_table_style)
         default_focus_text = ' OnLoad="document.filterform.filter.focus();"'
 
