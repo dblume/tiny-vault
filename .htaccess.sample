@@ -12,11 +12,15 @@ AddCharset UTF-8 .txt
     RedirectMatch 404 /tmp/
     RedirectMatch 404 /__pycache__
     RedirectMatch 404 /common.py
+    RedirectMatch 404 /config.py
     RedirectMatch 404 /constants.py
     RedirectMatch 404 /crypt_utils.py
     RedirectMatch 404 /decrypt.py
+    RedirectMatch 404 /gen_password.py
+    RedirectMatch 404 /markov.py
     RedirectMatch 404 /new_user_and_password.py
+    RedirectMatch 404 /README.md
+    RedirectMatch 404 /requirements.txt
     RedirectMatch 404 /smtp_creds.py
     RedirectMatch 404 /transactionlog.py
-    RedirectMatch 404 /config.py
 </IfModule>
