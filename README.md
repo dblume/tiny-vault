@@ -1,6 +1,6 @@
 [![License](https://img.shields.io/badge/license-MIT_license-blue.svg)](https://raw.githubusercontent.com/dblume/tiny-vault/main/LICENSE)
 ![python3.x](https://img.shields.io/badge/python-3.x-green.svg)
-![no AI](https://img.shields.io/badge/no_AI-blue.svg)
+![no AI](https://img.shields.io/badge/AI-none-blue.svg)
 
 ## Tiny Vault
 
