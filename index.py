@@ -153,7 +153,14 @@ if __name__ == '__main__':
     #
     # Begin body
     #
-    if not should_print_login_form:
+    if should_print_login_form:
+        # If the "fork me" image exists, then use it. No worries if not.
+        if os.path.isfile('images/forkme_right_orange_ff7600.png'):
+            print('<a href="https://github.com/dblume/tiny-vault"><img decoding="async" '
+                  'width="149" height="149" style="position: absolute; opacity: 0.5; top: 0; right: 0; border: 0;" '
+                  'src="images/forkme_right_orange_ff7600.png" class="attachment-full size-full" '
+                  'alt="Fork me on GitHub" loading="lazy"></a>')
+    else:
         print(constants.table_sorter_headers_text)
     print(constants.html_body_prefix_text)
 
