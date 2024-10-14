@@ -5,7 +5,7 @@ html_head_text = """<!DOCTYPE html>
   <link rel="shortcut icon" href="https://%s/favicon.ico">
   <link rel="stylesheet" type="text/css" media="screen" href="style.css">"""
 
-html_head_table_style = '<link rel="stylesheet" href="tablesorter.css" type="text/css" media="print, projection, screen" />'
+html_head_table_style = '<link rel="stylesheet" href="tablesorter.css" type="text/css" media="print, screen">'
 
 close_head_text = """</head>
 <body%s>"""
@@ -34,7 +34,7 @@ function validate() {
 //-->
 </script>"""
 
-edit_form_validator_text = """<SCRIPT LANGUAGE="JavaScript">
+edit_form_validator_text = """<script>
 <!--
 function validate() {
   if (document.pressed=="Delete") {
@@ -43,7 +43,7 @@ function validate() {
   return true;
 }
 //-->
-</SCRIPT>"""
+</script>"""
 
 html_body_prefix_text = """"""
 
@@ -116,9 +116,9 @@ edit_form_text_end = """</td>
 </table>
 </form>"""
 
-table_sorter_headers_text = """  <script type="text/javascript" src="jquery.js"></script>
-  <script type="text/javascript" src="jquery.tablesorter.min.js"></script>
-  <script type="text/javascript" src="jquery.uitablefilter.js"></script>
+table_sorter_headers_text = """  <script src="jquery.js"></script>
+  <script src="jquery.tablesorter.min.js"></script>
+  <script src="jquery.uitablefilter.js"></script>
   <script>
 
 $(document).ready(function(){
@@ -143,7 +143,7 @@ $(document).ready(function(){
 
 table_header = """<div class="sans"><form id="filter-form" name="filterform">Filter: <input name="filter" id="filter" value="" maxlength="30" size="30" type="text" autocapitalize="off">
 &nbsp;&nbsp;| &nbsp;<a href="edit.py?id=new">Create a new row</a>.&nbsp;
-| &nbsp;<span style="color:#00827F;"><span style="color:white; background-color:#00827F;"> ℹ </span> &nbsp;Selected text gets automatically copied to the clipboard.</span></div></form>
+| &nbsp;<span style="color:#00827F;"><span style="color:white; background-color:#00827F;"> ℹ </span> &nbsp;Selected text gets automatically copied to the clipboard.</span></form></div>
 <table style="border-spacing:1px; padding:0px;" id="myTable" class="tablesorter">
 <thead>
 <tr>

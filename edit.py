@@ -33,7 +33,7 @@ def print_edit_form(row: Sequence[str]) -> None:
         last_edited = ''
     else:
         delete_button = ' &nbsp;<input type="submit" name="submit" onclick="document.pressed=this.value" value="Delete">'
-        last_edited = f'<br /><span style="color:grey">Last edited on {time.strftime("%Y-%m-%d", time.localtime(float(row[7])))}.</span>'
+        last_edited = f'<br><span style="color:grey">Last edited on {time.strftime("%Y-%m-%d", time.localtime(float(row[7])))}.</span>'
     defaults = (row[2], row[3], common.form_quote(row[4]), suggested_password, row[5], row[6], row[8], last_edited, delete_button)
     print(constants.edit_form_text_start)
     print('<select name="type">')
@@ -64,17 +64,17 @@ def get_cookie(my_cookie: dict[str, str]) -> tuple[bool, bool, str, str, Sequenc
                     session = common.restore_from_salted_cookie(my_cookie['sess'].value, common.salt())
                     verified_session, enc_key, rows, verify_msg = common.verify_user(localdir, username, "", session)
                 else:
-                    verify_msg = "The session cookie is empty. <strong>macOS: Try relaunching Safari. (Really.)</strong><br />"
+                    verify_msg = "The session cookie is empty. <strong>macOS: Try relaunching Safari. (Really.)</strong><br>"
                     verify_msg += str(os.environ['HTTP_COOKIE'])
-                    verify_msg += "<br />\n"
+                    verify_msg += "<br>\n"
                     if isinstance(os.environ['HTTP_COOKIE'], str):
                         verify_msg += "Yes it is a str"
             else:
-                verify_msg = "No sess cookie. <strong>iOS: Try relaunching Safari.</strong><br />"
+                verify_msg = "No sess cookie. <strong>iOS: Try relaunching Safari.</strong><br>"
         else:
-            verify_msg = "No user cookie<br />"
+            verify_msg = "No user cookie<br>"
     else:
-        verify_msg = "No HTTP_COOKIE at all.<br />"
+        verify_msg = "No HTTP_COOKIE at all.<br>"
     return have_cookie, verified_session, username, session, rows, verify_msg
 
 
@@ -167,13 +167,13 @@ if __name__ == '__main__':
             if verified_session:
                 succeeded = delete_row(localdir, username, session, rows, id)
                 if succeeded:
-                    transaction_message = common.checkmark_char + ' The row was deleted. You can <a href="index.py">go back</a>.<br />'
+                    transaction_message = common.checkmark_char + ' The row was deleted. You can <a href="index.py">go back</a>.<br>'
                     tlog.log(os.environ['REMOTE_ADDR'], 'delete', '')
                 else:
-                    transaction_message = common.error_char + ' The row couldn\'t be deleted. You can <a href="index.py">try again</a>.<br />'
+                    transaction_message = common.error_char + ' The row couldn\'t be deleted. You can <a href="index.py">try again</a>.<br>'
                     tlog.log(os.environ['REMOTE_ADDR'], 'delete', 'attempt failed')
             else:
-                transaction_message = common.error_char + ' Could not verify your session to delete the row. <a href="index.py?do=logout">Login again</a>, please.<br />'
+                transaction_message = common.error_char + ' Could not verify your session to delete the row. <a href="index.py?do=logout">Login again</a>, please.<br>'
                 tlog.log(os.environ['REMOTE_ADDR'], 'delete', 'authentication failed')
         elif submit == 'OK':
             should_print_edit_form = False
@@ -207,18 +207,18 @@ if __name__ == '__main__':
                 row = [id, type, desc, user, sess, url, custom, str(time.time()), notes]
                 succeeded = change_row(localdir, username, session, rows, row)
                 if succeeded:
-                    transaction_message = '%s The row was %s. You can <a href="index.py">go back to see it in the list</a>.<br />' % (common.checkmark_char, row_change_text,)
+                    transaction_message = '%s The row was %s. You can <a href="index.py">go back to see it in the list</a>.<br>' % (common.checkmark_char, row_change_text,)
                     tlog.log(os.environ['REMOTE_ADDR'], row_change_text, '')
                 else:
-                    transaction_message = '%s The row couldn\'t be %s. You can <a href="index.py">try again</a>.<br />' % (common.error_char, row_change_text)
+                    transaction_message = '%s The row couldn\'t be %s. You can <a href="index.py">try again</a>.<br>' % (common.error_char, row_change_text)
                     tlog.log(os.environ['REMOTE_ADDR'], row_change_text, 'attempt failed')
             else:
                 transaction_message = '<p><span style="color: red; font-weight: bold;">%s Could not verify your session. The row was not %s.</span> <em><strong>Copy your changes</strong> from below</em> and <a href="index.py?do=logout">login again</a> to try again, please.</p>' % (common.error_char, row_change_text)
-                transaction_message += '<strong>Description</strong>: %s<br /><strong>Name</strong>: %s<br /><strong>Password</strong>: %s<br /><strong>URL</strong>: %s<br /><strong>Custom</strong>: %s<br /><strong>Notes</strong>: %s<br />' % (desc, user, sess, url, custom, notes)
+                transaction_message += '<strong>Description</strong>: %s<br><strong>Name</strong>: %s<br><strong>Password</strong>: %s<br><strong>URL</strong>: %s<br><strong>Custom</strong>: %s<br><strong>Notes</strong>: %s<br>' % (desc, user, sess, url, custom, notes)
                 tlog.log(os.environ['REMOTE_ADDR'], 'change', 'authentication failed')
         elif submit == 'Cancel':
             should_print_edit_form = False
-            transaction_message = 'No change made. You can <a href="index.py">go back to the list</a>.<br />'
+            transaction_message = 'No change made. You can <a href="index.py">go back to the list</a>.<br>'
             tlog.log(os.environ['REMOTE_ADDR'], 'cancel', '')
     else:
         if "id" in form_data:
@@ -232,7 +232,7 @@ if __name__ == '__main__':
                         row = r
                         break
         else:
-            transaction_message = common.error_char + ' Could not verify your session. <a href="index.py?do=logout">Login again</a>, please.<br />'
+            transaction_message = common.error_char + ' Could not verify your session. <a href="index.py?do=logout">Login again</a>, please.<br>'
             transaction_message += verify_msg  # delete this line
             tlog.log(os.environ['REMOTE_ADDR'], 'edit', 'verification failed')
             should_print_edit_form = False
@@ -257,13 +257,13 @@ if __name__ == '__main__':
     if len(special_message):
         print(special_message)
 
-    print(f'<div><span><a href="/index.py">Back to the list</a>.</span><div style="float: right; text-align:right">{username} <a href="index.py?do=logout">logout</a></div></div><br />')
+    print(f'<div><span><a href="/index.py">Back to the list</a>.</span><div style="float: right; text-align:right">{username} <a href="index.py?do=logout">logout</a></div></div><br>')
 
     if len(transaction_message):
         print(transaction_message)
 
 #    for k in sorted(form_data.keys()):
-#        print "%s: %s<br />" % (k, form_data[k])
+#        print "%s: %s<br>" % (k, form_data[k])
 
     if should_print_edit_form:
         print('<div style="position:absolute; top:30%; margin-top: -90px; left:50%; margin-left: -188px">')
