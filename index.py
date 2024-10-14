@@ -178,8 +178,8 @@ if __name__ == '__main__':
             print('</div>')
         print(constants.credits_text)
     else:
-        print(f'<div style="text-align:right">{username} <a href="index.py?do=logout">logout</a></div><br />')
-#        print '<div class="note"><strong>TIP:</strong> Sort multiple columns by holding down the <strong>shift</strong> key when clicking another header.</div><br />'
+        print(f'<div style="text-align:right">{username} <a href="index.py?do=logout">logout</a></div><br>')
+#        print '<div class="note"><strong>TIP:</strong> Sort multiple columns by holding down the <strong>shift</strong> key when clicking another header.</div><br>'
         print(constants.table_header)
         for id, type, desc, user, pwd, url, cust, ts, notes in rows:
             print("<tr>")
