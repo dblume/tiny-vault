@@ -33,7 +33,7 @@ def verify_user(localdir: str, username: str, password: str, session: str=""
         ) -> tuple[bool, str, Sequence[Sequence[str]], str]:
     message = ""
     if len(session):
-        enc_key = session
+        enc_key = session.encode('utf-8')
     else:
         enc_key = bcrypt.hashpw(password.encode(),
                                 config.bcrypt_salt)[-32:]

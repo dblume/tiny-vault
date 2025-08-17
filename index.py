@@ -1,4 +1,4 @@
-#!/home/dblume/opt/python-3.9.6/bin/python3
+#!/home/dblume/opt/python-3.12.9/bin/python3
 import os
 import sys
 import codecs

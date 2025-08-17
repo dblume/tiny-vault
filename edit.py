@@ -1,4 +1,4 @@
-#!/home/dblume/opt/python-3.9.6/bin/python3
+#!/home/dblume/opt/python-3.12.9/bin/python3
 
 import os
 import sys
@@ -103,7 +103,7 @@ def delete_row(localdir: str, username: str, session: str,
         with filelock.FileLock(filename) as lock:
             # Backup
             common.backup_files(filename)
-            crypt_utils.encrypt_rows(session, rows, filename)
+            crypt_utils.encrypt_rows(session.encode('utf-8'), rows, filename)
             succeeded = True
     except filelock.FileLockException as e:
         succeeded = False
@@ -125,7 +125,7 @@ def change_row(localdir: str, username: str, session: str,
         filename = os.path.join(localdir, 'data', username)
         with filelock.FileLock(filename) as lock:
             common.backup_files(filename)
-            crypt_utils.encrypt_rows(session, rows, filename)
+            crypt_utils.encrypt_rows(session.encode('utf-8'), rows, filename)
             succeeded = True
     except filelock.FileLockException as e:
         succeeded = False
