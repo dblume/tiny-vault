@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-#
 # http://eli.thegreenplace.net/2010/06/25/aes-encryption-of-files-in-python-with-pycrypto/
 import string
 import os
@@ -22,7 +21,7 @@ class crypt_util_error(Exception):
     pass
 
 
-def encrypt_file(key: str, in_file: BinaryIO, out_filename: str, chunksize: int=64 * 1024) -> None:
+def encrypt_file(key: bytes, in_file: BinaryIO, out_filename: str, chunksize: int=64 * 1024) -> None:
     """ Encrypts a file using AES (CBC mode) with the
         given key.
 
@@ -60,11 +59,11 @@ def encrypt_file(key: str, in_file: BinaryIO, out_filename: str, chunksize: int=
             if len(chunk) == 0:
                 break
             elif len(chunk) % 16 != 0:
-                chunk += ' ' * (16 - len(chunk) % 16)
+                chunk += (' ' * (16 - len(chunk) % 16)).encode('utf-8')
             outfile.write(encryptor.encrypt(chunk))
 
 
-def decrypt_file(key: str, in_filename: str, out_file: BinaryIO, chunksize: int=24 * 1024) -> bool:
+def decrypt_file(key: bytes, in_filename: str, out_file: BinaryIO, chunksize: int=24 * 1024) -> bool:
     """ Decrypts a file using AES (CBC mode) with the
         given key. Parameters are similar to encrypt_file.
     """
@@ -79,7 +78,7 @@ def decrypt_file(key: str, in_filename: str, out_file: BinaryIO, chunksize: int=
             chunk = infile.read(chunksize)
             if len(chunk) == 0:
                 break
-            out_file.write(decryptor.decrypt(chunk).decode('utf-8'))
+            out_file.write(decryptor.decrypt(chunk))
         out_file.truncate(origsize)
     return True
 
@@ -113,32 +112,37 @@ def convert_csv_rows(f: BinaryIO) -> Sequence[Sequence[str]]:
     return rows
 
 
-def encrypt_rows(enc_key: str, rows: Sequence[Sequence[str]], out_filename: str) -> None:
-    f = io.StringIO()
-    writer = csv.writer(f)
+def encrypt_rows(enc_key: bytes, rows: Sequence[Sequence[str]], out_filename: str) -> None:
+    sio = io.StringIO()
+    writer = csv.writer(sio)
     writer.writerows(rows)
-    hash = hashlib.md5(f.getvalue().encode('utf-8')).hexdigest()
+    bytes_ = sio.getvalue().encode('utf-8')
+    sio.close()
+    bio = io.BytesIO(bytes_)  # TODO see if there a more direct way from rows to bytes.
+    md5_hash = hashlib.md5(bytes_).hexdigest()
     with open(out_filename + '.hash', 'wb') as h:
-        h.write(hash.encode())
-    encrypt_file(enc_key, f, out_filename + '.enc', 16 * 1024)
-    f.close()
+        h.write(md5_hash.encode())
+    encrypt_file(enc_key, bio, out_filename + '.enc', 16 * 1024)
+    bio.close()
 
 
-def decrypt_rows(enc_key: str, in_filename: str) -> tuple[bool, Sequence[Sequence[str]]]:
+def decrypt_rows(enc_key: bytes, in_filename: str) -> tuple[bool, Sequence[Sequence[str]]]:
     """ returns True, rows upon success """
     rows = []
-    f = io.StringIO()
-    if not decrypt_file(enc_key, in_filename + '.enc', f, 16 * 1024):
+    bio = io.BytesIO()
+    if not decrypt_file(enc_key, in_filename + '.enc', bio, 16 * 1024):
         return False, rows
-    f.seek(0)
+    bio.seek(0)
     with open(in_filename + '.hash', 'rb') as h:
         file_hash = h.read()
-    if file_hash != hashlib.md5(f.getvalue().encode('utf-8')).hexdigest().encode():
+    if file_hash != hashlib.md5(bio.getvalue()).hexdigest().encode():
         return False, rows
-    reader = csv.reader(f)
+    sio = io.StringIO(bio.getvalue().decode('utf-8'))
+    bio.close()
+    reader = csv.reader(sio)
     for row in reader:
         rows.append(row)
-    f.close()
+    sio.close()
     return True, rows
 
 
